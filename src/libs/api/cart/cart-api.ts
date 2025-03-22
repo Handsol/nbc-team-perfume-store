@@ -1,5 +1,5 @@
-import { CartItem, AddCartData } from '@/types/cartItems';
-import { createClient } from '@/utils/supabase/createClient';
+import { CartItem, AddCartData } from '@/types/cart-items';
+import { createClient } from '@/utils/supabase/create-client';
 
 const supabase = createClient();
 

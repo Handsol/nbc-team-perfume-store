@@ -1,4 +1,4 @@
-import { deleteCartItem, updateCartItemQuantity, addCartItem, deleteAllCart } from '@/libs/api/cart/api';
+import { deleteCartItem, updateCartItemQuantity, addCartItem, deleteAllCart } from '@/libs/api/cart/cart-api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const usePostCartItem = () => {
