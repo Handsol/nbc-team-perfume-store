@@ -1,5 +1,14 @@
+import Header from '@/components/layout/Header';
+import Navi from '@/components/layout/Navi';
+
 const HomePage = () => {
-  return <div>Home</div>;
+  return (
+    <div>
+      <Header />
+      <Navi />
+      Home
+    </div>
+  );
 };
 
 export default HomePage;
