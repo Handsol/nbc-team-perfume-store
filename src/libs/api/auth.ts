@@ -9,7 +9,7 @@ export const isLoggedIn = async (): Promise<boolean> => {
 };
 
 // 로그아웃 기능
-export const logout = async (): Promise<void> => {
+export const signout = async (): Promise<void> => {
   await supabase.auth.signOut();
   alert('로그아웃 되었습니다. 안녕히 가세요!');
 };
