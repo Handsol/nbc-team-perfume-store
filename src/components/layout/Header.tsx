@@ -3,11 +3,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Search from '../Search';
-import { useEffect, useState } from 'react';
-import { isLoggedIn, logout } from '@/libs/api/auth';
+import { useEffect } from 'react';
+import { isLoggedIn, signout } from '@/libs/api/auth';
+import { useLoginState } from '@/zustand/login-status';
 
 const Header = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { loggedIn, setLoggedIn, logout } = useLoginState();
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -15,11 +16,11 @@ const Header = () => {
       setLoggedIn(login);
     };
     checkLogin();
-  }, []);
+  }, [setLoggedIn]);
 
   const handleLogout = async () => {
-    await logout();
-    setLoggedIn(false);
+    await signout();
+    logout();
   };
 
   return (
