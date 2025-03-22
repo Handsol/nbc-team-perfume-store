@@ -1,15 +1,7 @@
-import { CartItem, AddCartData, ApiResponse } from '@/types/cartItems';
-import { Products } from '@/types/products';
+import { CartItem, AddCartData } from '@/types/cartItems';
 import { createClient } from '@/utils/supabase/createClient';
 
 const supabase = createClient();
-
-//제품 정보 불러오기 // 다른 페이지에서 비슷한 용도로 사용되는 api가 있으면 삭제예정
-export const getProduct = async (id: Products['id']): Promise<Products> => {
-  const { data: product, error } = await supabase.from('products').select('*').eq('product_id', id).single();
-  if (error) throw error;
-  return product;
-};
 
 //장바구니의 모든 아이템 리스트 불러오기
 export const getCartItemList = async (userId: CartItem['userId']): Promise<CartItem[]> => {
