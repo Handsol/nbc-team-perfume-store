@@ -53,7 +53,7 @@ const Header = () => {
           <Link href={'/my-page'}>
             <Image src={'/mypage-button.png'} alt="login" width={80} height={0} />
           </Link>
-          <Link href={'/mycart-page'}>
+          <Link href={'/cart'}>
             <Image src={'/mycart-button.png'} alt="login" width={80} height={0} />
           </Link>
         </div>
