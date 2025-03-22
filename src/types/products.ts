@@ -3,7 +3,6 @@
 
 export interface Products {
   id: string;
-  //   created_at: string;
   user_id: string;
   title: string; //제품명
   info: string; //제품정보
