@@ -1,4 +1,6 @@
-import { supabase } from '../supabase-client';
+import { createClient } from '@/utils/supabase/create-client';
+
+const supabase = createClient();
 
 // 로그인 여부 확인
 export const isLoggedIn = async (): Promise<boolean> => {
