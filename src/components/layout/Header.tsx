@@ -28,7 +28,7 @@ const Header = () => {
       <div className="flex flex-row w-full max-w-[1400px] h-[100px] justify-between items-center px-4">
         {/* 로고 */}
         <Link href={'/'}>
-          <Image src={'/orot-logo.png'} alt="orot logo" width={150} height={0} />
+          <Image src={'/orot-logo.png'} alt="orot logo" width={150} />
         </Link>
 
         {/* 검색창 */}
@@ -42,19 +42,19 @@ const Header = () => {
         <div className="flex flex-row gap-1">
           {loggedIn ? (
             <button onClick={handleLogout}>
-              <Image src={'/logout-button.png'} alt="logout" width={80} height={0} />
+              <Image src={'/logout-button.png'} alt="logout" width={80} />
             </button>
           ) : (
             <button>
-              <Image src={'/login-button.png'} alt="login" width={80} height={0} />
+              <Image src={'/login-button.png'} alt="login" width={80} />
             </button>
           )}
 
           <button>
-            <Image src={'/mypage-button.png'} alt="login" width={80} height={0} />
+            <Image src={'/mypage-button.png'} alt="login" width={80} />
           </button>
           <button>
-            <Image src={'/mycart-button.png'} alt="login" width={80} height={0} />
+            <Image src={'/mycart-button.png'} alt="login" width={80} />
           </button>
         </div>
       </div>
