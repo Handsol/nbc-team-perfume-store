@@ -1,4 +1,4 @@
-const Navi = () => {
+const Navibar = () => {
   return (
     <div className="flex w-full border-b border-lightgray">
       <div className="flex w-full max-w-[1000px] h-[50px] mx-auto divide-x divide-[#d3d3d3]">
@@ -28,4 +28,4 @@ const Navi = () => {
   );
 };
 
-export default Navi;
+export default Navibar;
