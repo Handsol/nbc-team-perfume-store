@@ -7,6 +7,8 @@ export interface CartItem extends Products {
   product_id: Products['product_id'];
   cart_quantity: number;
   user_id: string;
+  products: Products;
+  cart_checked: boolean;
 }
 
 // 장바구니 추가시 필요한 타입

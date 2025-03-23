@@ -6,6 +6,6 @@ export const useGetCartItems = (userId: CartItem['user_id']) => {
   return useQuery({
     queryKey: ['cart'],
     queryFn: () => getCartItemList(userId),
-    enabled: !!userId
+    enabled: !!userId,
   });
 };

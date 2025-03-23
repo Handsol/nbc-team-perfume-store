@@ -1,12 +1,21 @@
-import { deleteCartItem, updateCartItemQuantity, addCartItem, deleteAllCart } from '@/libs/api/cart/cart-api';
+'use client';
+
+import {
+  deleteCartItem,
+  updateCartItemQuantity,
+  addCartItem,
+  deleteAllCart,
+  toggleCartItemChecked
+} from '@/libs/api/cart/cart-api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export const usePostCartItem = () => {
+export const useAddCartItem = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: addCartItem,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(data);
       queryClient.invalidateQueries({
         queryKey: ['cart']
       });
@@ -19,6 +28,19 @@ export const useUpdateItemQuantity = () => {
 
   return useMutation({
     mutationFn: updateCartItemQuantity,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['cart']
+      });
+    }
+  });
+};
+
+export const useToggleChecked = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: toggleCartItemChecked,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['cart']
