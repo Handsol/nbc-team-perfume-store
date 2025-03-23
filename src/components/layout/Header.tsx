@@ -45,17 +45,17 @@ const Header = () => {
               <Image src={'/logout-button.png'} alt="logout" width={80} height={0} />
             </button>
           ) : (
-            <Link href={'/login'}>
+            <button>
               <Image src={'/login-button.png'} alt="login" width={80} height={0} />
-            </Link>
+            </button>
           )}
 
-          <Link href={'/my-page'}>
+          <button>
             <Image src={'/mypage-button.png'} alt="login" width={80} height={0} />
-          </Link>
-          <Link href={'/cart'}>
+          </button>
+          <button>
             <Image src={'/mycart-button.png'} alt="login" width={80} height={0} />
-          </Link>
+          </button>
         </div>
       </div>
     </div>
