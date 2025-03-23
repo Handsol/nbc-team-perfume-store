@@ -24,7 +24,7 @@ const Header = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full border-b border-lightgray">
+    <header className="flex flex-col items-center w-full border-b border-lightgray">
       <div className="flex flex-row w-full max-w-[1400px] h-[100px] justify-between items-center px-4">
         {/* 로고 */}
         <Link href={'/'}>
@@ -58,7 +58,7 @@ const Header = () => {
           </button>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 
