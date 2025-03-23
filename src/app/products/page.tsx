@@ -1,5 +1,5 @@
 import { getProducts } from '@/libs/products';
-import ProductList from '@/components/ProductList';
+import ProductList from '@/components/product-list';
 import { createClient } from '@/utils/supabase/create-client';
 
 export default async function ProductsPage() {
