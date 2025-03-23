@@ -1,6 +1,6 @@
 import { getProducts } from '@/libs/products';
 import ProductList from '@/components/ProductList';
-import { createClient } from '@/utils/supabase/createClient';
+import { createClient } from '@/utils/supabase/create-client';
 
 export default async function ProductsPage() {
   const supabase = createClient();
