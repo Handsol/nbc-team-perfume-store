@@ -1,4 +1,4 @@
-import ProductList from '@/components/Product-list';
+import ProductList from '@/components/ProductList';
 import { getProducts } from '@/libs/api/product/product-api';
 
 const ProductsPage = async () => {
