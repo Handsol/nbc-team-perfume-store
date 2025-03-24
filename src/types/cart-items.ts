@@ -4,7 +4,7 @@ import type { Products } from './products';
 export interface CartItem extends Products {
   cartId: string;
   // created_at: string;
-  productId: Products['id'];
+  productId: Products['product_id'];
   quantity: number;
   userId: string;
 }
