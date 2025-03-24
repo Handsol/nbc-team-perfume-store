@@ -1,16 +1,13 @@
 const nextConfig = {
-  /* config options here */
-  reactStrictMode: false,
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "image.sivillage.com",
-        pathname: "/**",
+        protocol: 'http',
+        hostname: '**'
       },
-    ],
-    formats: ["image/avif", "image/webp"],
-  },
+      { protocol: 'https', hostname: '**' }
+    ]
+  }
 };
 
 module.exports = nextConfig;
