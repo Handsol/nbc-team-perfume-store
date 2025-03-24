@@ -67,3 +67,12 @@ export const signout = async (): Promise<void> => {
   if (error) throw new Error(error.message); // 에러 발생 시 예외 처리
   else alert('로그아웃 되었습니다. 안녕히 가세요!');
 };
+
+/**
+ * 현재 로그인 상태를 확인하는 함수
+ */
+export const isLoggedIn = async (): Promise<boolean> => {
+  const supabase = getBrowserClient();
+  const { data, error } = await supabase.auth.getSession();
+  return !!data.session && !error;
+};

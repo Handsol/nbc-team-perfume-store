@@ -4,27 +4,27 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Search from '../Search';
 import { useEffect } from 'react';
-//import { isLoggedIn, signout } from '@/libs/api/auth';
-//import { useLoginState } from '@/zustand/login-status';
+import { useAuthStore } from '@/zustand/authStore';
+import { isLoggedIn, signout } from '@/libs/api/supabaseUserAPI';
 
 const Header = () => {
-  // const { loggedIn, setLoggedIn, logout } = useLoginState();
+  const isLogin = useAuthStore((state) => state.isLogin);
 
   // useEffect(() => {
   //   const checkLogin = async () => {
-  //     const login = await isLoggedIn();
+  //     const loggedIn = await isLoggedIn();
   //     setLoggedIn(login);
   //   };
   //   checkLogin();
   // }, [setLoggedIn]);
 
-  // const handleLogout = async () => {
-  //   await signout();
-  //   logout();
-  // };
-
-  const loggedIn = false;
-  const handleLogout = async () => {};
+  const handleLogout = async () => {
+    try {
+      await signout();
+    } catch (error) {
+      console.error('로그아웃 실패:', error);
+    }
+  };
 
   return (
     <header className="flex flex-col items-center w-full border-b border-lightgray">
@@ -43,7 +43,7 @@ const Header = () => {
 
         {/* 버튼 모음 */}
         <div className="flex flex-row gap-1">
-          {loggedIn ? (
+          {isLogin ? (
             <button onClick={handleLogout}>
               <Image src={'/logout-button.png'} alt="logout" width={80} height={0} style={{ height: 'auto' }} />
             </button>
