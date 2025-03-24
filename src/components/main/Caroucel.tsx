@@ -3,7 +3,11 @@ import { getProducts } from '@/libs/api/product/product-api';
 import Image from 'next/image';
 
 const Caroucel = async () => {
-  const products = await getProducts();
+  // 최신 등록순으로 제품 5개의 정보만 가져오기
+  const allProducts = await getProducts();
+  const products = allProducts
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, 5);
 
   return (
     <div>
