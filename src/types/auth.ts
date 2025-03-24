@@ -1,3 +1,5 @@
+import { Session } from '@supabase/supabase-js';
+
 export interface User {
   id: string;
   nickname: string;
@@ -12,4 +14,16 @@ export interface AuthState {
   setLogin: (user: User, token: string) => void;
   setLogout: () => void;
   setToken: (token: string) => void;
+}
+
+export interface SignupOptions {
+  email: string;
+  password: string;
+  nickname: string;
+}
+
+export interface SignupResponse {
+  user: User | null;
+  session: Session | null;
+  error: string | null;
 }
