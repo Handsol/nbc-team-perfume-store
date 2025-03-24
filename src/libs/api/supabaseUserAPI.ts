@@ -76,3 +76,26 @@ export const isLoggedIn = async (): Promise<boolean> => {
   const { data, error } = await supabase.auth.getSession();
   return !!data.session && !error;
 };
+
+/**
+ * 현재 사용자와 세션 정보를 가져오는 함수
+ */
+export const getCurrentUser = async (): Promise<AuthResponse> => {
+  const supabase = getBrowserClient();
+  const { data, error } = await supabase.auth.getSession();
+
+  const mappedUser = data.session?.user
+    ? {
+        id: data.session.user.id,
+        nickname: data.session.user.user_metadata?.user_nickname || '',
+        email: data.session.user.email || '',
+        created_at: data.session.user.created_at
+      }
+    : null;
+
+  return {
+    user: mappedUser,
+    session: data.session,
+    error: error?.message || null
+  };
+};
