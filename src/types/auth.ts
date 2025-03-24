@@ -22,7 +22,12 @@ export interface SignupOptions {
   nickname: string;
 }
 
-export interface SignupResponse {
+export interface LoginOptions {
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse {
   user: User | null;
   session: Session | null;
   error: string | null;
