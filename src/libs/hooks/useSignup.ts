@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { signup } from '@/libs/api/supabaseUserAPI';
+import { signup } from '@/libs/api/supabase-user-api';
 import { useAuthStore } from '@/zustand/authStore';
 
 export const useSignup = () => {

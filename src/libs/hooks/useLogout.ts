@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { signout } from '@/libs/api/supabaseUserAPI';
+import { signout } from '@/libs/api/supabase-user-api';
 import { useAuthStore } from '@/zustand/authStore';
 
 export const useLogout = () => {
