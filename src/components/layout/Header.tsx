@@ -3,20 +3,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Search from '../Search';
-import { useEffect } from 'react';
 import { useAuthStore } from '@/zustand/authStore';
-import { isLoggedIn, signout } from '@/libs/api/supabaseUserAPI';
+import { signout } from '@/libs/api/supabaseUserAPI';
+import { useAuthCheck } from '@/libs/hooks/useAuthCheck';
 
 const Header = () => {
   const isLogin = useAuthStore((state) => state.isLogin);
 
-  // useEffect(() => {
-  //   const checkLogin = async () => {
-  //     const loggedIn = await isLoggedIn();
-  //     setLoggedIn(login);
-  //   };
-  //   checkLogin();
-  // }, [setLoggedIn]);
+  useAuthCheck(); // 세션 및 zustand 상태 동기화 진행
 
   const handleLogout = async () => {
     try {
