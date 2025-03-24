@@ -4,21 +4,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Search from '../Search';
 import { useAuthStore } from '@/zustand/authStore';
-import { signout } from '@/libs/api/supabaseUserAPI';
 import { useAuthCheck } from '@/libs/hooks/useAuthCheck';
+import { useLogout } from '@/libs/hooks/useLogout';
 
 const Header = () => {
   const isLogin = useAuthStore((state) => state.isLogin);
+  const { handleLogout, loading: logoutLoading } = useLogout();
 
   useAuthCheck(); // 세션 및 zustand 상태 동기화 진행
-
-  const handleLogout = async () => {
-    try {
-      await signout();
-    } catch (error) {
-      console.error('로그아웃 실패:', error);
-    }
-  };
 
   return (
     <header className="flex flex-col items-center w-full border-b border-lightgray">
@@ -38,7 +31,7 @@ const Header = () => {
         {/* 버튼 모음 */}
         <div className="flex flex-row gap-1">
           {isLogin ? (
-            <button onClick={handleLogout}>
+            <button onClick={handleLogout} disabled={logoutLoading}>
               <Image src={'/logout-button.png'} alt="logout" width={80} height={0} style={{ height: 'auto' }} />
             </button>
           ) : (
