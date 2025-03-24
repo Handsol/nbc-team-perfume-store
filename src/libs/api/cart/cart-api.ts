@@ -1,9 +1,9 @@
 'use server';
 
 import { CartItem, AddCartData } from '@/types/cart-items';
-import { createClient } from '@/utils/supabase/create-client';
+import { getServerClient } from '@/utils/supabase/serverClient';
 
-const supabase = createClient();
+const supabase = getServerClient();
 
 //장바구니의 모든 아이템 리스트+제품정보 불러오기
 export const getCartItemList = async (userId: CartItem['user_id']): Promise<CartItem[]> => {

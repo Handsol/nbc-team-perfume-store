@@ -13,3 +13,7 @@ export interface Products {
   product_thumbnail: string;
   product_brand: string;
 }
+
+export interface ProductDetails extends Omit<Products, 'user_id'> {
+  products_photos: { product_img_path: string }[];
+}
