@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { getProductDetails } from '@/libs/api/product/product-api';
-import ProductDetail from '@/components/product/product-detail';
+import ProductDetail from '@/components/product/ProductDetail';
 
 const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
   const details = await getProductDetails(params.id);
