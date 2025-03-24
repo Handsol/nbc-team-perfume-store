@@ -57,3 +57,13 @@ export const login = async ({ email, password }: LoginOptions): Promise<AuthResp
     error: error ? error.message : null
   };
 };
+
+/**
+ * 로그아웃을 처리하는 함수
+ */
+export const signout = async (): Promise<void> => {
+  const supabase = getBrowserClient();
+  const { error } = await supabase.auth.signOut();
+  if (error) throw new Error(error.message); // 에러 발생 시 예외 처리
+  else alert('로그아웃 되었습니다. 안녕히 가세요!');
+};
