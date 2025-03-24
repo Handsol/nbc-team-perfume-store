@@ -11,4 +11,5 @@ export interface Products {
   created_at: string;
   product_category: string;
   product_thumbnail: string;
+  product_brand: string;
 }
