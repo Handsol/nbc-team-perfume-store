@@ -1,35 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import { getBrowserClient } from '@/utils/supabase/browserClient';
+import { useSignup } from '@/libs/hooks/useSignup';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 export default function SignupPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [error, setError] = useState<string | null>(null);
-
-  const handleSignup = async () => {
-    const supabase = getBrowserClient();
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { user_nickname: nickname }
-      }
-    });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      alert('회원가입 성공! 이메일을 확인해주세요.');
-      setEmail('');
-      setPassword('');
-      setNickname('');
-    }
-  };
+  const { email, setEmail, password, setPassword, nickname, setNickname, error, loading, handleSignup } = useSignup();
 
   return (
     <div className="max-w-md mx-auto mt-10">
@@ -40,6 +16,7 @@ export default function SignupPage() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         className="mb-4"
+        disabled={loading}
       />
       <Input
         type="password"
@@ -47,6 +24,7 @@ export default function SignupPage() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         className="mb-4"
+        disabled={loading}
       />
       <Input
         type="text"
@@ -54,9 +32,12 @@ export default function SignupPage() {
         value={nickname}
         onChange={(e) => setNickname(e.target.value)}
         className="mb-4"
+        disabled={loading}
       />
       {error && <p className="text-red-500 mb-4">{error}</p>}
-      <Button onClick={handleSignup}>회원가입</Button>
+      <Button onClick={handleSignup} disabled={loading}>
+        {loading ? '처리 중...' : '회원가입'}
+      </Button>
     </div>
   );
 }

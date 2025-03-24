@@ -3,6 +3,9 @@
 import { SignupOptions, SignupResponse } from '@/types/auth';
 import { getBrowserClient } from '@/utils/supabase/browserClient';
 
+/**
+ * 회원가입을 처리하는 함수
+ */
 export const signup = async ({ email, password, nickname }: SignupOptions): Promise<SignupResponse> => {
   const supabase = getBrowserClient();
   const { data, error } = await supabase.auth.signUp({
