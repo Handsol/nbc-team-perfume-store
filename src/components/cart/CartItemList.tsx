@@ -26,14 +26,10 @@ const CartItemList = ({ user_id }: CartItemListProps) => {
   const handleQuantity = (cartId: CartItem['cart_id'], currentQuantity: number, add: boolean) => {
     // 현재 아이템의 수량 값에
     // add 가 true면 + 1/ false면  -1
-    let updatedQuantity;
-    if (add) {
-      updatedQuantity = currentQuantity + 1;
-      updateItemQuantity({ cartId, quantity: updatedQuantity });
-    } else {
-      updatedQuantity = currentQuantity - 1;
-      updateItemQuantity({ cartId, quantity: updatedQuantity });
-    }
+    
+    let updatedQuantity = add ? currentQuantity + 1 : currentQuantity - 1;
+
+    updateItemQuantity({ cartId, quantity: updatedQuantity });
   };
 
   //아이템 삭제
@@ -96,19 +92,11 @@ const CartItemList = ({ user_id }: CartItemListProps) => {
                     <h2 className="font-bold mb-4 ">{products.product_brand}</h2>
                     <h3>{products.product_title}</h3>
                   </div>
-                  {/* <div className="flex flex-row-reverse	"> */}
-                  {/* <div className="flex flex-col">
-                      <div className="text-2xl font-light mb-2 text-gray">{products.product_price}</div>
-                      <p className="font-thin">수량</p>
-                      
-                    </div> */}
-                  {/* </div> */}
                 </div>
 
                 <div className="flex flex-col w-32 mx-4 pt-10">
-                  <p className="text-gray">Total</p>
                   <div className="text-2xl font-bold mb-2 text-black">
-                    {total} <span className="text-base font-normal">원</span>
+                    {total.toLocaleString()} <span className="text-base font-normal">원</span>
                   </div>
                   <div className="flex">
                     <button
@@ -136,20 +124,21 @@ const CartItemList = ({ user_id }: CartItemListProps) => {
           })}
         </ul>
         <div className="p-4 bg-black text-white w-64">
-          <ul className = "flex flex-col gap-4">
+          <ul className="flex flex-col gap-4 p-4">
             <li className="flex flex-row justify-between items-center">
               <h2>총 결제 금액</h2>
-              <h3>{calculateTotal()} 원</h3>
+              <h3>{calculateTotal().toLocaleString()} 원</h3>
             </li>
             <li className="flex flex-row justify-between items-center">
-              <h2>배송비</h2>
+              <h2>배송비 (+)</h2>
               <h3>0 원</h3>
             </li>
             <li className="w-full h-0.5 my-2 bg-gray"></li>
             <li className="flex flex-row justify-between items-center">
               <h2>결제 예정금액</h2>
-              <h3>{calculateTotal()} 원</h3>
+              <h3>{calculateTotal().toLocaleString()} 원</h3>
             </li>
+            <button>주문하기</button>
           </ul>
         </div>
       </div>
