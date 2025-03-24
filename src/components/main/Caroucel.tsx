@@ -1,4 +1,4 @@
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { getProducts } from '@/libs/api/product/product-api';
 import Image from 'next/image';
 
@@ -41,6 +41,8 @@ const Caroucel = async () => {
               </CarouselItem>
             ))}
           </CarouselContent>
+          <CarouselPrevious className="left-4 top-1/2 -translate-y-1/2 z-50 bg-black/50 text-white hover:bg-black w-10 h-10" />
+          <CarouselNext className="right-4 top-1/2 -translate-y-1/2 z-50 bg-black/50 text-white hover:bg-black w-10 h-10" />
         </Carousel>
       </div>
     </div>
