@@ -127,7 +127,7 @@ const CartItemList = ({ user_id }: CartItemListProps) => {
           <ul className="flex flex-col gap-4 p-4">
             <li className="flex flex-row justify-between items-center">
               <h2>총 결제 금액</h2>
-              <h3>{calculateTotal().toLocaleString()} 원</h3>
+              <h3>{calculateTotal()?.toLocaleString()} 원</h3>
             </li>
             <li className="flex flex-row justify-between items-center">
               <h2>배송비 (+)</h2>
@@ -136,7 +136,7 @@ const CartItemList = ({ user_id }: CartItemListProps) => {
             <li className="w-full h-0.5 my-2 bg-gray"></li>
             <li className="flex flex-row justify-between items-center">
               <h2>결제 예정금액</h2>
-              <h3>{calculateTotal().toLocaleString()} 원</h3>
+              <h3>{calculateTotal()?.toLocaleString()} 원</h3>
             </li>
             <button>주문하기</button>
           </ul>
