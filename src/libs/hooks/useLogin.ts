@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { login } from '@/libs/api/supabaseUserAPI';
+import { useAuthStore } from '@/zustand/authStore';
 
 export const useLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { setLogin } = useAuthStore();
 
   const handleLogin = async () => {
     setLoading(true);
@@ -18,6 +20,7 @@ export const useLogin = () => {
     if (error) {
       setError(error);
     } else if (user && session) {
+      setLogin(user, session.access_token);
       alert('로그인 성공!');
       setEmail('');
       setPassword('');
