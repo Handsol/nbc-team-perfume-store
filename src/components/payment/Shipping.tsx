@@ -2,7 +2,8 @@
 import { TAddress } from '@/types/shipping';
 import { useState } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
-import { postcodeScriptUrl } from 'react-daum-postcode/lib/loadPostcode';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
 
 const Shipping = () => {
   const [userFullAddress, setFullAddress] = useState('');
@@ -40,30 +41,35 @@ const Shipping = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h2 className="text-xl mb-4">배송 정보</h2>
-      <div className="flex flex-col gap-2 justify-start py-6  px-8">
+      <div className="flex flex-col gap-6 justify-start py-6 px-8">
         <div className="flex flex-row gap-6 container">
-          <p className='w-28 break-words'> 받는 분</p>
-          <div>
-            <label>
-              <input type="text" defaultValue={userZoneCode} placeholder="우편번호" required />
-              <button type="button" onClick={handleClick}>
+          <p className="w-32"> 받는 분</p>
+          <div className="flex flex-col gap-4 w-full">
+            <div className="flex items-center w-full gap-3">
+              <Input type="text" defaultValue={userZoneCode} placeholder="우편번호" required className="h-12" />
+              <Button type="submit" onClick={handleClick} className="h-12">
                 우편번호 검색
-              </button>
-            </label>
-            <input type="text" defaultValue={userFullAddress} placeholder="주소" required />
-            <input
+              </Button>
+            </div>
+            <div className="flex items-center w-full gap-3">
+              <Input type="text" defaultValue={userFullAddress} placeholder="주소" required className="h-12" />
+              <Input type="text" defaultValue={userExtraAddress} placeholder="참고항목" required className="h-12" />
+            </div>
+            <Input
               type="text"
               value={userDetailAddress}
               onChange={(e) => setUserDetailAddress(e.target.value)}
               placeholder="상세 주소"
+              className="h-12"
               required
             />
-            <input type="text" defaultValue={userExtraAddress} placeholder="참고항목" required />
           </div>
         </div>
-        <div>
-          <p className='w-28 break-words'>배송 메시지</p>
-          <input/>
+        <div className="flex flex-row gap-6 container">
+          <p className="w-32">배송 메시지</p>
+          <div className="flex items-center w-full">
+            <Input placeholder="ex) 배송 전 연락주세요." className="h-12" />
+          </div>
         </div>
       </div>
     </div>

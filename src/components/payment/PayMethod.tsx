@@ -21,7 +21,7 @@ const PayMethod = () => {
                   } rounded items-center m-1 box-border`}
                 >
                   <button
-                    className={`relative h-14 leading-5 text-gray-600 cursor-pointer box-border w-full ${
+                    className={`relative h-12 leading-5 text-gray-600 cursor-pointer box-border w-full ${
                       seletedMethod ===item ? 'font-bold' : 'font-normal'}`}
                     type="button"
                     aria-disabled="false"
