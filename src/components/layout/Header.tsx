@@ -6,12 +6,18 @@ import Search from '../Search';
 import { useAuthStore } from '@/zustand/authStore';
 import { useAuthCheck } from '@/libs/hooks/useAuthCheck';
 import { useLogout } from '@/libs/hooks/useLogout';
+import { usePathname } from 'next/navigation';
 
 const Header = () => {
   const isLogin = useAuthStore((state) => state.isLogin);
   const { handleLogout, loading: logoutLoading } = useLogout();
+  const pathname = usePathname();
 
   useAuthCheck(); // 세션 및 zustand 상태 동기화 진행
+
+  if (pathname === '/sign-up' || pathname === '/login') {
+    return null;
+  }
 
   return (
     <header className="flex flex-col items-center w-full border-b border-lightgray">

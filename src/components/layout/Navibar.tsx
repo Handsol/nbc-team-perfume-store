@@ -1,4 +1,14 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
+
 const Navibar = () => {
+  const pathname = usePathname();
+
+  if (pathname === '/sign-up' || pathname === '/login') {
+    return null;
+  }
+
   return (
     <div className="flex w-full border-b border-lightgray">
       <div className="flex w-full max-w-[1000px] h-[50px] mx-auto divide-x divide-[#d3d3d3]">
