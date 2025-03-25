@@ -1,9 +1,11 @@
-import ProductList from '@/components/ProductList';
+import ProductList from '@/components/product/ProductList';
 import { getProducts } from '@/libs/api/product/product-api';
 
-const ProductsPage = async () => {
+const ProductsPage = async ({ searchParams }: { searchParams: { category?: string } }) => {
+  // URL 쿼리 파라미터에서 'category' 가져오기
+  const category = searchParams.category;
   try {
-    const products = await getProducts();
+    const products = await getProducts(category);
     return <ProductList products={products} />;
   } catch (error) {
     console.error('Error fetching products:', error);
