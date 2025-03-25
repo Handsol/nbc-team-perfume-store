@@ -17,3 +17,7 @@ export interface Products {
 export interface ProductDetails extends Omit<Products, 'user_id'> {
   products_photos: { product_img_path: string }[];
 }
+
+export interface ProductListProps {
+  products: Products[];
+}
