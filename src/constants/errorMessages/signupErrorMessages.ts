@@ -7,7 +7,7 @@ export const SIGNUP_ERROR_MESSAGES = {
     required: '비밀번호는 필수 입력 항목입니다.',
     length: '비밀번호는 최소 8자 이상이어야 합니다.',
     combination: '영문, 숫자, 특수문자가 포함되어야 합니다.',
-    consecutive: '4자 이상 연속된 문자/숫자를 포함할 수 없습니다.'
+    consecutive: '4자 이상 연속된 동일 문자/숫자를 포함할 수 없습니다.'
   },
   nickname: {
     required: '닉네임은 필수 입력 항목입니다.',

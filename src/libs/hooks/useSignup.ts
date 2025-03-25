@@ -26,12 +26,21 @@ export const useSignup = () => {
   const [capsLockOn, setCapsLockOn] = useState(false);
   const [numLockOn, setNumLockOn] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const { setLogin } = useAuthStore();
 
   // Caps Lock 및 Num Lock 감지
-  const checkKeyboardState = useCallback((event: KeyboardEvent) => {
+  const checkKeyboardState = useCallback((event: Event) => {
+    // event가 KeyboardEvent인지 확인
+    if (!(event instanceof KeyboardEvent)) {
+      console.warn('Event is not a KeyboardEvent:', event);
+      return;
+    }
+
     setCapsLockOn(event.getModifierState('CapsLock'));
-    setNumLockOn(event.getModifierState('NumLock'));
+    setNumLockOn(!event.getModifierState('NumLock')); // numlock은 이상하게 반대로 동작
+
+    // console.log('CapsLock:', event.getModifierState('CapsLock'), 'NumLock:', event.getModifierState('NumLock'));
   }, []);
 
   useEffect(() => {
@@ -88,10 +97,49 @@ export const useSignup = () => {
     return isValid;
   };
 
-  // 비밀번호 입력시 실시간 검사
+  // 이메일 입력 시 실시간 유효성 검사
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
+    if (!value) {
+      setErrors((prev) => ({ ...prev, email: SIGNUP_ERROR_MESSAGES.email.required }));
+    } else if (!isValidEmail(value)) {
+      setErrors((prev) => ({ ...prev, email: SIGNUP_ERROR_MESSAGES.email.invalid }));
+    } else {
+      setErrors((prev) => ({ ...prev, email: null }));
+    }
+  };
+
+  // 비밀번호 입력 시 실시간 유효성 검사
   const handlePasswordChange = (value: string) => {
     setPassword(value);
     setPasswordValidation(validatePassword(value, email));
+
+    if (!value) {
+      setErrors((prev) => ({ ...prev, password: SIGNUP_ERROR_MESSAGES.password.required }));
+    } else {
+      const validation = validatePassword(value, email);
+      if (!validation.length) {
+        setErrors((prev) => ({ ...prev, password: SIGNUP_ERROR_MESSAGES.password.length }));
+      } else if (!validation.combination) {
+        setErrors((prev) => ({ ...prev, password: SIGNUP_ERROR_MESSAGES.password.combination }));
+      } else {
+        setErrors((prev) => ({ ...prev, password: null }));
+      }
+    }
+  };
+
+  // 닉네임 입력 시 실시간 유효성 검사
+  const handleNicknameChange = (value: string) => {
+    setNickname(value);
+    if (!value) {
+      setErrors((prev) => ({ ...prev, nickname: SIGNUP_ERROR_MESSAGES.nickname.required }));
+    } else if (value.length < 2 || value.length > 12) {
+      setErrors((prev) => ({ ...prev, nickname: SIGNUP_ERROR_MESSAGES.nickname.length }));
+    } else if (!isAlphaNumericOnly(value)) {
+      setErrors((prev) => ({ ...prev, nickname: SIGNUP_ERROR_MESSAGES.nickname.specialChars }));
+    } else {
+      setErrors((prev) => ({ ...prev, nickname: null }));
+    }
   };
 
   const handleSignup = async () => {
@@ -130,16 +178,16 @@ export const useSignup = () => {
 
   return {
     email,
-    setEmail,
     password,
-    handlePasswordChange,
     nickname,
-    setNickname,
     errors,
     passwordValidation,
     capsLockOn,
     numLockOn,
     loading,
+    handleEmailChange,
+    handlePasswordChange,
+    handleNicknameChange,
     handleSignup
   };
 };
