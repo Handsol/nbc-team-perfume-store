@@ -3,7 +3,6 @@ import type { Products } from './products';
 //제품 타입을 상속받아 확장하여 CartItem 선언
 export interface CartItem extends Products {
   cart_id: string;
-  // created_at: string;
   product_id: Products['product_id'];
   cart_quantity: number;
   user_id: string;
