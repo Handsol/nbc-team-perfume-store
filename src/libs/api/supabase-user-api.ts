@@ -25,6 +25,14 @@ export const signup = async ({ email, password, nickname }: SignupOptions): Prom
       }
     : null;
 
+  if (!error && mappedUser) {
+    // public.users에 사용자 추가
+    const { error: insertError } = await supabase
+      .from('users')
+      .insert([{ id: mappedUser.id, nickname, email, created_at: mappedUser.created_at }]);
+    if (insertError) console.error('Insert Error:', insertError);
+  }
+
   return {
     user: mappedUser,
     session: data.session,
