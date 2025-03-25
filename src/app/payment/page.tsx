@@ -1,4 +1,5 @@
 import PayMethod from '@/components/payment/PayMethod';
+import PayUser from '@/components/payment/PayUser';
 import Shipping from '@/components/payment/Shipping';
 import { buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
@@ -10,6 +11,7 @@ const PaymentPage = () => {
       <h1 className="text-2xl mb-4">주문/결제</h1>
       <Shipping />
       <PayMethod />
+      <PayUser />
       <div className="flex justify-center items-center mb-10">
         <Link
           className={`${buttonVariants({ variant: 'default', size: 'lg' })} w-80 h-16 text-xl`}

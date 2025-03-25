@@ -44,7 +44,7 @@ const Shipping = () => {
       <div className="flex flex-col gap-6 justify-start py-6 px-8">
         <div className="flex flex-row gap-6 container">
           <p className="w-32"> 받는 분</p>
-          <div className="flex flex-col gap-4 w-full">
+          <div className="flex flex-col gap-2 w-full">
             <div className="flex items-center w-full gap-3">
               <Input type="text" defaultValue={userZoneCode} placeholder="우편번호" required className="h-12" />
               <Button type="submit" onClick={handleClick} className="h-12">
@@ -53,7 +53,7 @@ const Shipping = () => {
             </div>
             <div className="flex items-center w-full gap-3">
               <Input type="text" defaultValue={userFullAddress} placeholder="주소" required className="h-12" />
-              <Input type="text" defaultValue={userExtraAddress} placeholder="참고항목" required className="h-12" />
+              <Input type="text" defaultValue={userExtraAddress} placeholder="참고항목" className="h-12" />
             </div>
             <Input
               type="text"
