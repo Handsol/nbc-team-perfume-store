@@ -14,6 +14,7 @@ const ProductDetail = ({ productDetailContent }: ProductDetailProps) => {
             alt="제품 상세 페이지"
             width={600}
             height={400}
+            style={{ width: 'auto', height: 'auto' }}
             className="rounded-lg shadow-md object-contain"
           />
         </div>
