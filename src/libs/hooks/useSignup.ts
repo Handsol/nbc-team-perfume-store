@@ -75,7 +75,7 @@ export const useSignup = () => {
       } else if (!validation.combination) {
         newErrors.password = SIGNUP_ERROR_MESSAGES.password.combination;
         isValid = false;
-      } else if (!validation.consecutive) {
+      } else if (validation.consecutive) {
         newErrors.password = SIGNUP_ERROR_MESSAGES.password.consecutive;
         isValid = false;
       }
