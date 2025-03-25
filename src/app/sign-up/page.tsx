@@ -12,6 +12,7 @@ export default function SignupPage() {
   const {
     email,
     password,
+    confirmPassword,
     nickname,
     errors,
     passwordValidation,
@@ -20,6 +21,7 @@ export default function SignupPage() {
     loading,
     handleEmailChange,
     handlePasswordChange,
+    handleConfirmPasswordChange,
     handleNicknameChange,
     handleSignup
   } = useSignup();
@@ -86,6 +88,20 @@ export default function SignupPage() {
             </ul>
           </>
         )}
+      </div>
+
+      <div className="mb-4">
+        <div className="relative">
+          <Input
+            type="password"
+            placeholder="비밀번호 확인"
+            value={confirmPassword}
+            onChange={(e) => handleConfirmPasswordChange(e.target.value)}
+            disabled={loading}
+            className={errors.password ? 'border-red-500' : ''}
+          />
+        </div>
+        {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
       </div>
 
       <div className="mb-4">

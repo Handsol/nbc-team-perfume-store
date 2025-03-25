@@ -9,6 +9,10 @@ export const SIGNUP_ERROR_MESSAGES = {
     combination: '영문, 숫자, 특수문자가 포함되어야 합니다.',
     consecutive: '4자 이상 연속된 동일 문자/숫자를 포함할 수 없습니다.'
   },
+  passwordConfirm: {
+    required: '비밀번호 확인은 필수 입력 항목입니다.',
+    diffrent: '비밀번호가 일치하지 않습니다.'
+  },
   nickname: {
     required: '닉네임은 필수 입력 항목입니다.',
     length: '닉네임은 2자 이상 12자 이하여야 합니다.',

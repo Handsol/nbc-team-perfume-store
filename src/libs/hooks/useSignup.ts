@@ -10,8 +10,9 @@ import { isAlphaNumericOnly, isValidEmail, validatePassword } from '@/utils/vali
 export const useSignup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [nickname, setNickname] = useState('');
-  const [errors, setErrors] = useState<Errors>({ email: null, password: null, nickname: null });
+  const [errors, setErrors] = useState<Errors>({ email: null, password: null, confirmPassword: null, nickname: null });
   const [passwordValidation, setPasswordValidation] = useState<PasswordValidation>({
     length: false,
     alphabet: false,
@@ -50,7 +51,7 @@ export const useSignup = () => {
 
   // 전체 폼 유효성 검사
   const validateForm = (): boolean => {
-    const newErrors: Errors = { email: null, password: null, nickname: null };
+    const newErrors: Errors = { email: null, password: null, confirmPassword: null, nickname: null };
     let isValid = true;
 
     // 이메일 검사
@@ -126,6 +127,25 @@ export const useSignup = () => {
         setErrors((prev) => ({ ...prev, password: null }));
       }
     }
+
+    // 비밀번호가 변경될 때 비밀번호 확인 필드도 재검사
+    if (confirmPassword && value !== confirmPassword) {
+      setErrors((prev) => ({ ...prev, confirmPassword: SIGNUP_ERROR_MESSAGES.passwordConfirm.diffrent }));
+    } else {
+      setErrors((prev) => ({ ...prev, confirmPassword: null }));
+    }
+  };
+
+  // 비밀번호 확인 입력 시 실시간 유효성 검사
+  const handleConfirmPasswordChange = (value: string) => {
+    setConfirmPassword(value);
+    if (!value) {
+      setErrors((prev) => ({ ...prev, confirmPassword: SIGNUP_ERROR_MESSAGES.passwordConfirm.required }));
+    } else if (value !== password) {
+      setErrors((prev) => ({ ...prev, confirmPassword: SIGNUP_ERROR_MESSAGES.passwordConfirm.diffrent }));
+    } else {
+      setErrors((prev) => ({ ...prev, confirmPassword: null }));
+    }
   };
 
   // 닉네임 입력 시 실시간 유효성 검사
@@ -148,7 +168,7 @@ export const useSignup = () => {
     }
 
     setLoading(true);
-    setErrors({ email: null, password: null, nickname: null });
+    setErrors({ email: null, password: null, confirmPassword: null, nickname: null });
 
     const { user, session, error } = await signup({ email, password, nickname });
 
@@ -179,6 +199,7 @@ export const useSignup = () => {
   return {
     email,
     password,
+    confirmPassword,
     nickname,
     errors,
     passwordValidation,
@@ -187,6 +208,7 @@ export const useSignup = () => {
     loading,
     handleEmailChange,
     handlePasswordChange,
+    handleConfirmPasswordChange,
     handleNicknameChange,
     handleSignup
   };

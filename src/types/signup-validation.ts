@@ -1,6 +1,7 @@
 export interface Errors {
   email: string | null;
   password: string | null;
+  confirmPassword: string | null;
   nickname: string | null;
 }
 
