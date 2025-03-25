@@ -73,7 +73,7 @@ export const validatePassword = (password: string, email: string) => {
 // 비밀번호 강도 계산 함수
 export const getPasswordStrength = (validation: ReturnType<typeof validatePassword>): string => {
   // 기본 조건 점수 (length, combination, consecutive)
-  let score = [validation.length, validation.combination, validation.consecutive].filter(Boolean).length;
+  let score = [validation.length, validation.combination, !validation.consecutive].filter(Boolean).length;
 
   // 추가 점수
   if (validation.uppercase && validation.lowercase) score += 1;

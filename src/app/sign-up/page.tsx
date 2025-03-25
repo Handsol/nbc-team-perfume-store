@@ -16,6 +16,7 @@ export default function SignupPage() {
     nickname,
     errors,
     passwordValidation,
+    passwordStrength,
     capsLockOn,
     numLockOn,
     loading,
@@ -36,6 +37,19 @@ export default function SignupPage() {
     color: isValid ? 'text-green-500' : 'text-gray-500',
     icon: isValid ? <CheckCircle size={16} /> : <XCircle size={16} />
   });
+
+  const getStrengthColor = (strength: string) => {
+    switch (strength) {
+      case '강함':
+        return 'text-green-500';
+      case '보통':
+        return 'text-yellow-500';
+      case '약함':
+        return 'text-red-500';
+      default:
+        return 'text-gray-500';
+    }
+  };
 
   return (
     <div className="max-w-md mx-auto mt-10">
@@ -86,6 +100,9 @@ export default function SignupPage() {
                 );
               })}
             </ul>
+            <p className={`text-sm mt-1 ${getStrengthColor(passwordStrength)}`}>
+              비밀번호 강도: {passwordStrength || '없음'}
+            </p>
           </>
         )}
       </div>

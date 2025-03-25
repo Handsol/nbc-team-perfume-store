@@ -5,7 +5,7 @@ import { signup } from '@/libs/api/supabase-user-api';
 import { useAuthStore } from '@/zustand/authStore';
 import { Errors, PasswordValidation } from '@/types/signup-validation';
 import { SIGNUP_ERROR_MESSAGES } from '@/constants/errorMessages/signupErrorMessages';
-import { isAlphaNumericOnly, isValidEmail, validatePassword } from '@/utils/validation';
+import { getPasswordStrength, isAlphaNumericOnly, isValidEmail, validatePassword } from '@/utils/validation';
 
 export const useSignup = () => {
   const [email, setEmail] = useState('');
@@ -196,6 +196,8 @@ export const useSignup = () => {
     setLoading(false);
   };
 
+  const passwordStrength = password ? getPasswordStrength(passwordValidation) : '';
+
   return {
     email,
     password,
@@ -203,6 +205,7 @@ export const useSignup = () => {
     nickname,
     errors,
     passwordValidation,
+    passwordStrength,
     capsLockOn,
     numLockOn,
     loading,
