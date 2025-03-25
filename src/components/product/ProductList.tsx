@@ -1,11 +1,7 @@
 'use client';
-import { Products } from '@/types/products';
+import { Products, ProductListProps } from '@/types/products';
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface ProductListProps {
-  products: Products[];
-}
 
 const ProductList = ({ products }: ProductListProps) => {
   return (
