@@ -2,9 +2,20 @@ import { ProductDetails, Products } from '@/types/products';
 import { getServerClient } from '@/utils/supabase/serverClient';
 
 // 제품 리스트 불러오기
-export const getProducts = async (): Promise<Products[]> => {
+export const getProducts = async (category?: string): Promise<Products[]> => {
   const supabase = getServerClient();
-  const { data, error } = await supabase.from('products').select('*');
+  let query = supabase.from('products').select('*');
+  if (category) {
+    if (category === 'man' || category === 'woman') {
+      // "man" 또는 "woman"으로 시작하는 접두사
+      query = query.ilike('product_category', `${category}%`);
+    } else {
+      // "manEDT", "womanEDP" 등 정확한 값
+      query = query.eq('product_category', category);
+    }
+  }
+
+  const { data, error } = await query;
   if (error) {
     throw error;
   }
