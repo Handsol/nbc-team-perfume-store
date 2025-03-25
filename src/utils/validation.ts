@@ -42,7 +42,7 @@ export const hasIdMatch = (password: string, email: string): boolean => {
 
 // 연속된 문자(4개 이상) 포함 여부 검사
 export const hasConsecutiveChars = (str: string): boolean => {
-  return /(.)\1{3,}/.test(str); // 동일한 문자가 4개 이상 연속
+  return /(.)\1{3,}/.test(str);
 };
 
 // 비밀번호 유효성 검사 통합 함수
