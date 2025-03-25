@@ -2,7 +2,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { getProducts } from '@/libs/api/product/product-api';
 import Image from 'next/image';
 
-const Caroucel = async () => {
+const CarouselSection = async () => {
   // 최신 등록순으로 제품 5개의 정보만 가져오기
   const allProducts = await getProducts();
   const products = allProducts
@@ -49,4 +49,4 @@ const Caroucel = async () => {
   );
 };
 
-export default Caroucel;
+export default CarouselSection;
