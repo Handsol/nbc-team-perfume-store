@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { login } from '@/libs/api/supabase-user-api';
 import { useAuthStore } from '@/zustand/authStore';
+import { useRouter } from 'next/navigation';
 
 export const useLogin = () => {
   const [email, setEmail] = useState('');
@@ -10,6 +11,7 @@ export const useLogin = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const { setLogin } = useAuthStore();
+  const router = useRouter();
 
   const handleLogin = async () => {
     setLoading(true);
@@ -24,9 +26,14 @@ export const useLogin = () => {
       alert('로그인 성공!');
       setEmail('');
       setPassword('');
+      router.push('/');
     }
 
     setLoading(false);
+  };
+
+  const goToLoginPage = () => {
+    router.push('/login');
   };
 
   return {
@@ -36,6 +43,7 @@ export const useLogin = () => {
     setPassword,
     error,
     loading,
-    handleLogin
+    handleLogin,
+    goToLoginPage
   };
 };

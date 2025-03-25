@@ -7,10 +7,12 @@ import { useAuthStore } from '@/zustand/authStore';
 import { useAuthCheck } from '@/libs/hooks/useAuthCheck';
 import { useLogout } from '@/libs/hooks/useLogout';
 import { usePathname } from 'next/navigation';
+import { useLogin } from '@/libs/hooks/useLogin';
 
 const Header = () => {
   const isLogin = useAuthStore((state) => state.isLogin);
   const { handleLogout, loading: logoutLoading } = useLogout();
+  const { goToLoginPage } = useLogin();
   const pathname = usePathname();
 
   useAuthCheck(); // 세션 및 zustand 상태 동기화 진행
@@ -41,7 +43,7 @@ const Header = () => {
               <Image src={'/logout-button.png'} alt="logout" width={80} height={0} style={{ height: 'auto' }} />
             </button>
           ) : (
-            <button>
+            <button onClick={goToLoginPage}>
               <Image src={'/login-button.png'} alt="login" width={80} height={0} style={{ height: 'auto' }} />
             </button>
           )}
