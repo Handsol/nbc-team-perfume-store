@@ -8,12 +8,12 @@ const Shipping = () => {
   const [userFullAddress, setFullAddress] = useState('');
   const [userZoneCode, setZoneCode] = useState('');
   const [userExtraAddress, setExtraAddress] = useState('');
-  const [userDetailAddress,setUserDetailAddress] =useState('')
+  const [userDetailAddress, setUserDetailAddress] = useState('');
   const postcodeScriptUrl = 'http://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
 
   const open = useDaumPostcodePopup(postcodeScriptUrl);
 
-  const handleComplete = (data:TAddress) => {
+  const handleComplete = (data: TAddress) => {
     console.log(data);
     let fullAddress = data.address; // 주소 변수
     let extraAddress = ''; // 참고항목 변수
@@ -26,7 +26,7 @@ const Shipping = () => {
       if (data.buildingName !== '') {
         extraAddress += extraAddress !== '' ? `,${data.buildingName}` : data.buildingName;
       }
-        // fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+      // fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
     setFullAddress(fullAddress);
     setZoneCode(zoneCode);
@@ -38,19 +38,35 @@ const Shipping = () => {
   };
 
   return (
-    <>
-    <label>
-
-      <input type="text" defaultValue={userZoneCode} placeholder='우편번호' required />
-      <button type="button" onClick={handleClick}>
-        우편번호 검색
-   
-      </button>
-    </label>
-      <input type="text" defaultValue={userFullAddress} placeholder="주소" required />
-      <input type="text" value={userDetailAddress} onChange={(e)=>setUserDetailAddress(e.target.value)} placeholder="상세 주소" required />
-      <input type="text" defaultValue={userExtraAddress} placeholder="참고항목" required />
-    </>
+    <div className="container mx-auto px-4 py-8">
+      <h2 className="text-xl mb-4">배송 정보</h2>
+      <div className="flex flex-col gap-2 justify-start py-6  px-8">
+        <div className="flex flex-row gap-6 container">
+          <p className='w-28 break-words'> 받는 분</p>
+          <div>
+            <label>
+              <input type="text" defaultValue={userZoneCode} placeholder="우편번호" required />
+              <button type="button" onClick={handleClick}>
+                우편번호 검색
+              </button>
+            </label>
+            <input type="text" defaultValue={userFullAddress} placeholder="주소" required />
+            <input
+              type="text"
+              value={userDetailAddress}
+              onChange={(e) => setUserDetailAddress(e.target.value)}
+              placeholder="상세 주소"
+              required
+            />
+            <input type="text" defaultValue={userExtraAddress} placeholder="참고항목" required />
+          </div>
+        </div>
+        <div>
+          <p className='w-28 break-words'>배송 메시지</p>
+          <input/>
+        </div>
+      </div>
+    </div>
   );
 };
 
