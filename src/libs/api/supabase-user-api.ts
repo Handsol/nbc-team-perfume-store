@@ -108,3 +108,22 @@ export const getCurrentUser = async (): Promise<AuthResponse> => {
     error: error?.message || null
   };
 };
+
+/**
+ * 카카오 소셜 로그인 함수
+ */
+export const signInWithKakao = async (redirectTo: string): Promise<{ error: string | null }> => {
+  const supabase = getBrowserClient();
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'kakao',
+    options: {
+      redirectTo
+    }
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { error: null };
+};
