@@ -3,7 +3,7 @@
 
 import { useEffect } from 'react';
 import { useAuthStore } from '@/zustand/authStore';
-import { getCurrentUser } from '@/libs/api/supabaseUserAPI';
+import { getCurrentUser } from '@/libs/api/supabase-user-api';
 
 export const useAuthCheck = () => {
   const { setLogin, setLogout } = useAuthStore();
