@@ -38,18 +38,20 @@ export default function SignupPage() {
     icon: isValid ? <CheckCircle size={16} /> : <XCircle size={16} />
   });
 
-  const getStrengthColor = (strength: string) => {
+  const getStrengthBarStyle = (strength: string) => {
     switch (strength) {
-      case '강함':
-        return 'text-green-500';
-      case '보통':
-        return 'text-yellow-500';
       case '약함':
-        return 'text-red-500';
+        return { width: '33%', color: 'bg-red-500', text: '약함' };
+      case '보통':
+        return { width: '66%', color: 'bg-yellow-500', text: '보통' };
+      case '강함':
+        return { width: '100%', color: 'bg-green-500', text: '강함' };
       default:
-        return 'text-gray-500';
+        return { width: '0%', color: 'bg-gray-300', text: '없음' };
     }
   };
+
+  const strengthBar = getStrengthBarStyle(passwordStrength);
 
   return (
     <div className="max-w-md mx-auto mt-10">
@@ -100,9 +102,16 @@ export default function SignupPage() {
                 );
               })}
             </ul>
-            <p className={`text-sm mt-1 ${getStrengthColor(passwordStrength)}`}>
-              비밀번호 강도: {passwordStrength || '없음'}
-            </p>
+            <div className="flex items-center justify-between mt-2 mb-1">
+              <span className="text-sm text-gray-600">비밀번호 강도:</span>
+              <span className={`text-sm ${strengthBar.color.replace('bg-', 'text-')}`}>{strengthBar.text}</span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div
+                className={`h-2 rounded-full transition-all duration-300 ${strengthBar.color}`}
+                style={{ width: strengthBar.width }}
+              />
+            </div>
           </>
         )}
       </div>
