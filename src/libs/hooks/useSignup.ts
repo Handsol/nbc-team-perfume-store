@@ -1,18 +1,26 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { signup } from '@/libs/api/supabase-user-api';
+import { signInWithGoogle, signInWithKakao, signup } from '@/libs/api/supabase-user-api';
 import { useAuthStore } from '@/zustand/authStore';
 import { Errors, PasswordValidation } from '@/types/signup-validation';
 import { SIGNUP_ERROR_MESSAGES } from '@/constants/errorMessages/signupErrorMessages';
 import { getPasswordStrength, isAlphaNumericOnly, isValidEmail, validatePassword } from '@/utils/validation';
+import { LOGIN_ERROR_MESSAGES } from '@/constants/errorMessages/loginErrorMessages';
+import { useRouter } from 'next/navigation';
 
 export const useSignup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [nickname, setNickname] = useState('');
-  const [errors, setErrors] = useState<Errors>({ email: null, password: null, confirmPassword: null, nickname: null });
+  const [errors, setErrors] = useState<Errors>({
+    email: null,
+    password: null,
+    confirmPassword: null,
+    nickname: null,
+    social: null
+  });
   const [passwordValidation, setPasswordValidation] = useState<PasswordValidation>({
     length: false,
     alphabet: false,
@@ -29,6 +37,7 @@ export const useSignup = () => {
   const [loading, setLoading] = useState(false);
 
   const { setLogin } = useAuthStore();
+  const router = useRouter();
 
   // Caps Lock 및 Num Lock 감지
   const checkKeyboardState = useCallback((event: Event) => {
@@ -51,7 +60,7 @@ export const useSignup = () => {
 
   // 전체 폼 유효성 검사
   const validateForm = (): boolean => {
-    const newErrors: Errors = { email: null, password: null, confirmPassword: null, nickname: null };
+    const newErrors: Errors = { email: null, password: null, confirmPassword: null, nickname: null, social: null };
     let isValid = true;
 
     // 이메일 검사
@@ -80,6 +89,15 @@ export const useSignup = () => {
         newErrors.password = SIGNUP_ERROR_MESSAGES.password.consecutive;
         isValid = false;
       }
+    }
+
+    // 비밀번호 확인 검사
+    if (!confirmPassword) {
+      newErrors.confirmPassword = SIGNUP_ERROR_MESSAGES.passwordConfirm.required;
+      isValid = false;
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = SIGNUP_ERROR_MESSAGES.passwordConfirm.diffrent;
+      isValid = false;
     }
 
     // 닉네임 검사
@@ -168,17 +186,18 @@ export const useSignup = () => {
     }
 
     setLoading(true);
-    setErrors({ email: null, password: null, confirmPassword: null, nickname: null });
+    setErrors({ email: null, password: null, confirmPassword: null, nickname: null, social: null });
 
     const { user, session, error } = await signup({ email, password, nickname });
 
     if (error) {
-      setErrors((prev) => ({ ...prev, email: error }));
+      console.error(`회원가입 실패: ${error}`);
     } else if (user && session) {
       setLogin(user, session.access_token);
       alert('회원가입 성공! 이메일을 확인해주세요.');
       setEmail('');
       setPassword('');
+      setConfirmPassword('');
       setNickname('');
       setPasswordValidation({
         length: false,
@@ -191,12 +210,78 @@ export const useSignup = () => {
         noIdMatch: false,
         consecutive: false
       });
+
+      router.push('/login');
     }
 
     setLoading(false);
   };
 
   const passwordStrength = password ? getPasswordStrength(passwordValidation) : '';
+
+  // 카카오 회원가입/로그인 처리
+  // 참고: https://euni8917.tistory.com/575
+  const handleKakaoAuth = async () => {
+    setLoading(true);
+    setErrors((prev) => ({ ...prev, social: null }));
+
+    try {
+      const { error } = await signInWithKakao(`${window.location.origin}/auth/callback`);
+
+      if (error) {
+        setErrors((prev) => ({ ...prev, social: LOGIN_ERROR_MESSAGES.social.kakao.failed }));
+        setLoading(false);
+        return;
+      }
+    } catch {
+      setErrors((prev) => ({ ...prev, social: LOGIN_ERROR_MESSAGES.social.kakao.error }));
+      setLoading(false);
+    }
+  };
+
+  // 구글 회원가입/로그인 처리
+  // 참고: https://velog.io/@jntantmsemt/supabase-%EC%86%8C%EC%85%9C%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EA%B5%AC%EA%B8%80-%EB%A1%9C%EA%B7%B8%EC%9D%B8
+  const handleGoogleAuth = async () => {
+    setLoading(true);
+    setErrors((prev) => ({ ...prev, social: null }));
+
+    try {
+      const { error } = await signInWithGoogle(`${window.location.origin}/auth/callback`);
+
+      if (error) {
+        setErrors((prev) => ({ ...prev, social: LOGIN_ERROR_MESSAGES.social.google.failed }));
+        setLoading(false);
+        return;
+      }
+    } catch {
+      setErrors((prev) => ({ ...prev, social: LOGIN_ERROR_MESSAGES.social.google.error }));
+      setLoading(false);
+    }
+  };
+
+  // 회원가입 취소->로그인 페이지로 이동
+  const handleCancel = () => {
+    // 폼 데이터 초기화
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+    setNickname('');
+    setErrors({ email: null, password: null, confirmPassword: null, nickname: null, social: null });
+    setPasswordValidation({
+      length: false,
+      combination: false,
+      noIdMatch: false,
+      consecutive: false,
+      alphabet: false,
+      number: false,
+      special: false,
+      uppercase: false,
+      lowercase: false
+    });
+    setLoading(false);
+
+    router.push('/login');
+  };
 
   return {
     email,
@@ -213,6 +298,9 @@ export const useSignup = () => {
     handlePasswordChange,
     handleConfirmPasswordChange,
     handleNicknameChange,
-    handleSignup
+    handleSignup,
+    handleKakaoAuth,
+    handleGoogleAuth,
+    handleCancel
   };
 };

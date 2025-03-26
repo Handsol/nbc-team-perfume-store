@@ -6,7 +6,7 @@ interface ProductDetailProps {
 
 const ProductDetail = ({ productDetailContent }: ProductDetailProps) => {
   return (
-    <div className="max-h-[500px] overflow-y-auto bg-white p-4 rounded-lg">
+    <div className="bg-white p-4 rounded-lg">
       {productDetailContent.map((photo, idx) => (
         <div key={idx} className="mb-6 flex justify-center">
           <Image
@@ -14,6 +14,7 @@ const ProductDetail = ({ productDetailContent }: ProductDetailProps) => {
             alt="제품 상세 페이지"
             width={600}
             height={400}
+            style={{ width: 'auto', height: 'auto' }}
             className="rounded-lg shadow-md object-contain"
           />
         </div>
