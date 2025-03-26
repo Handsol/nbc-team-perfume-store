@@ -137,6 +137,10 @@ export const useMyPage = () => {
       setConfirmNewPassword('');
   };
 
+  const goToMyPage = () => {
+    router.push('/my-page');
+  };
+
   return {
     nickname,
     handleNicknameChange,
@@ -151,5 +155,6 @@ export const useMyPage = () => {
     errors,
     loading,
     successMessage,
+    goToMyPage
   };
 };
