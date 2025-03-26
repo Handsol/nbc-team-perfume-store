@@ -24,7 +24,8 @@ export default function SignupPage() {
     handlePasswordChange,
     handleConfirmPasswordChange,
     handleNicknameChange,
-    handleSignup
+    handleSignup,
+    handleCancel
   } = useSignup();
 
   const passwordConditions = [
@@ -54,38 +55,36 @@ export default function SignupPage() {
   const strengthBar = getStrengthBarStyle(passwordStrength);
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-2xl mb-4">회원가입</h1>
+    <div className="max-w-md mx-auto mt-16 p-6 bg-white shadow-lg rounded-xl">
+      <h1 className="text-3xl font-bold mb-6 text-center">회원가입</h1>
 
-      <div className="mb-4">
+      <div className="mb-5">
         <Input
           type="email"
           placeholder="이메일"
           value={email}
           onChange={(e) => handleEmailChange(e.target.value)}
           disabled={loading}
-          className={errors.email ? 'border-red-500' : ''}
+          className={`w-full p-3 transition-all duration-200 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
         />
-        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+        {errors.email && <p className="text-red-500 text-sm mt-2">{errors.email}</p>}
       </div>
 
-      <div className="mb-4">
-        <div className="relative">
-          <Input
-            type="password"
-            placeholder="비밀번호"
-            value={password}
-            onChange={(e) => handlePasswordChange(e.target.value)}
-            disabled={loading}
-            className={errors.password ? 'border-red-500' : ''}
-          />
-        </div>
+      <div className="mb-5">
+        <Input
+          type="password"
+          placeholder="비밀번호"
+          value={password}
+          onChange={(e) => handlePasswordChange(e.target.value)}
+          disabled={loading}
+          className={`w-full p-3 transition-all duration-200 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+        />
         {errors.password === SIGNUP_ERROR_MESSAGES.password.required && (
-          <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+          <p className="text-red-500 text-sm mt-2">{errors.password}</p>
         )}
         {password && (
           <>
-            <ul className="text-sm mt-2 space-y-1">
+            <ul className="text-sm mt-3 space-y-2">
               {passwordConditions.map((condition) => {
                 let isValid = false;
                 if (condition.key === 'length') isValid = passwordValidation.length;
@@ -93,7 +92,6 @@ export default function SignupPage() {
                 if (condition.key === 'consecutive') isValid = !passwordValidation.consecutive;
 
                 const { color, icon } = getConditionStyle(isValid);
-
                 return (
                   <li key={condition.key} className={`flex items-center ${color}`}>
                     <span className="mr-2">{icon}</span>
@@ -102,13 +100,13 @@ export default function SignupPage() {
                 );
               })}
             </ul>
-            <div className="flex items-center justify-between mt-2 mb-1">
+            <div className="flex items-center justify-between mt-3 mb-2">
               <span className="text-sm text-gray-600">비밀번호 강도:</span>
               <span className={`text-sm ${strengthBar.color.replace('bg-', 'text-')}`}>{strengthBar.text}</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="w-full bg-gray-200 rounded-full h-2.5">
               <div
-                className={`h-2 rounded-full transition-all duration-300 ${strengthBar.color}`}
+                className={`h-2.5 rounded-full transition-all duration-300 ${strengthBar.color}`}
                 style={{ width: strengthBar.width }}
               />
             </div>
@@ -116,55 +114,45 @@ export default function SignupPage() {
         )}
       </div>
 
-      <div className="mb-4">
-        <div className="relative">
-          <Input
-            type="password"
-            placeholder="비밀번호 확인"
-            value={confirmPassword}
-            onChange={(e) => handleConfirmPasswordChange(e.target.value)}
-            disabled={loading}
-            className={errors.password ? 'border-red-500' : ''}
-          />
-        </div>
-        {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+      <div className="mb-5">
+        <Input
+          type="password"
+          placeholder="비밀번호 확인"
+          value={confirmPassword}
+          onChange={(e) => handleConfirmPasswordChange(e.target.value)}
+          disabled={loading}
+          className={`w-full p-3 transition-all duration-200 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+        />
+        {errors.confirmPassword && <p className="text-red-500 text-sm mt-2">{errors.confirmPassword}</p>}
       </div>
 
-      <div className="mb-4">
+      <div className="mb-6">
         <Input
           type="text"
           placeholder="닉네임"
           value={nickname}
           onChange={(e) => handleNicknameChange(e.target.value)}
           disabled={loading}
-          className={errors.nickname ? 'border-red-500' : ''}
+          className={`w-full p-3 transition-all duration-200 ${errors.nickname ? 'border-red-500' : 'border-gray-300'}`}
         />
-        {errors.nickname && <p className="text-red-500 text-sm mt-1">{errors.nickname}</p>}
+        {errors.nickname && <p className="text-red-500 text-sm mt-2">{errors.nickname}</p>}
       </div>
 
-      <div className="mb-4">
-        {(capsLockOn || numLockOn) && (
-          <div className="mt-2 p-2 bg-yellow-50 rounded-md">
-            <div className="text-yellow-500 text-sm">
-              {capsLockOn && (
-                <p className="flex items-center">
-                  <span className="mr-1">⚠️</span>
-                  {SIGNUP_ERROR_MESSAGES.keyboard.capsLock}
-                </p>
-              )}
-              {numLockOn && (
-                <p className="flex items-center">
-                  <span className="mr-1">⚠️</span>
-                  {SIGNUP_ERROR_MESSAGES.keyboard.numLock}
-                </p>
-              )}
-            </div>
+      {(capsLockOn || numLockOn) && (
+        <div className="mb-5 p-3 bg-yellow-50 rounded-md">
+          <div className="text-yellow-600 text-sm">
+            {capsLockOn && <p className="flex items-center">⚠️ {SIGNUP_ERROR_MESSAGES.keyboard.capsLock}</p>}
+            {numLockOn && <p className="flex items-center">⚠️ {SIGNUP_ERROR_MESSAGES.keyboard.numLock}</p>}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      <Button onClick={handleSignup} disabled={loading}>
+      <Button onClick={handleSignup} disabled={loading} className="w-full py-3 mb-5 text-white rounded-lg">
         {loading ? '처리 중...' : '회원가입'}
+      </Button>
+
+      <Button onClick={handleCancel} className="w-full py-3 text-white rounded-lg">
+        취소
       </Button>
     </div>
   );

@@ -3,6 +3,7 @@ export interface Errors {
   password: string | null;
   confirmPassword: string | null;
   nickname: string | null;
+  social: string | null;
 }
 
 export interface PasswordValidation {

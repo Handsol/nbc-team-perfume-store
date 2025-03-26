@@ -5,9 +5,13 @@ import PayMethod from '@/components/payment/PayMethod';
 import PayUser from '@/components/payment/PayUser';
 import Shipping from '@/components/payment/Shipping';
 import { buttonVariants } from '@/components/ui/button';
+import useCartStore from '@/zustand/cart-store';
 import Link from 'next/link';
 
 const PaymentPage = () => {
+  const selectedItems = useCartStore((state) => state.selectedItems);
+
+
   return (
     <div className="container mx-auto my-10 flex flex-col gap-2">
       <h1 className="mb-4 text-2xl">주문/결제</h1>
