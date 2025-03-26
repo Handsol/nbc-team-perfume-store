@@ -6,9 +6,7 @@ import PayUser from '@/components/payment/PayUser';
 import Shipping from '@/components/payment/Shipping';
 import { buttonVariants } from '@/components/ui/button';
 import useCartStore from '@/zustand/cart-store';
-import { TPayStore } from '@/zustand/pay-store';
 import Link from 'next/link';
-import { useState } from 'react';
 
 const PaymentPage = () => {
   const selectedItems = useCartStore((state) => state.selectedItems);
