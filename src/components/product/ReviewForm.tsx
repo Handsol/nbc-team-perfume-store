@@ -10,6 +10,7 @@ const ReviewForm = ({ productId }: { productId: string }) => {
   const queryClient = useQueryClient();
   const [content, setContent] = useState<string>('');
   const [rating, setRating] = useState<number>(0);
+  const [starRating, setStarRating] = useState<number>(0);
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -23,39 +24,65 @@ const ReviewForm = ({ productId }: { productId: string }) => {
       queryClient.invalidateQueries({ queryKey: ['reviews', productId] });
       setContent('');
       setRating(0);
+      setStarRating(0);
     }
   });
 
+  // 별점 클릭 핸들러
+  const handleRatingClick = (value: number) => {
+    setRating(value);
+  };
+
+  // 별점 호버 핸들러
+  const handleRatingHover = (value: number) => {
+    setStarRating(value);
+  };
+
+  // 호버 해제 핸들러
+  const handleRatingLeave = () => {
+    setStarRating(0);
+  };
+
   return (
-    <div>
+    <div className="mt-6">
       <form
         onSubmit={(event) => {
           event.preventDefault();
           mutation.mutate();
         }}
-        className="flex flex-col gap-2"
+        className="flex flex-col gap-4"
       >
-        {/* 리뷰 사진
-        <input type="file" onChange={handleSubmit} /> */}
-        {/*리뷰 내용*/}
-        <input
+        <textarea
           onChange={(e) => setContent(e.target.value)}
           value={content}
           placeholder="리뷰를 입력하세요"
           required
-          className="border p-2"
+          className="border border-gray-300 rounded-lg p-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 resize-none h-24"
         />
-        {/*별점*/}
-        <input
-          type="number"
-          value={rating}
-          onChange={(e) => setRating(Number(e.target.value))}
-          min="1"
-          max="5"
-          required
-          className="border p-2"
-        />
-        <Button type="submit" disabled={!user} className="bg-blue-500 text-white p-2">
+        {/* 별점 입력 */}
+        <div className="flex items-center">
+          <span className="text-sm text-gray-700 mr-2">별점:</span>
+          {[...Array(5)].map((_, index) => {
+            const starValue = index + 1;
+            return (
+              <button
+                type="button"
+                key={starValue}
+                onClick={() => handleRatingClick(starValue)}
+                onMouseEnter={() => handleRatingHover(starValue)}
+                onMouseLeave={handleRatingLeave}
+                className={'text-2xl p-0 m-0 text-yellow-500 focus:outline-none'}
+              >
+                {starValue <= (starRating || rating) ? '★' : '☆'}
+              </button>
+            );
+          })}
+        </div>
+        <Button
+          type="submit"
+          disabled={!user}
+          className="bg-black text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-800 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
           리뷰 작성
         </Button>
       </form>

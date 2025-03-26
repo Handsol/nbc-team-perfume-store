@@ -18,7 +18,7 @@ export const uploadReview = async ({
 
 export const getReviews = async (product_id: review['product_id']) => {
   const supabase = getServerClient();
-  const { data, error } = await supabase.from('reviews').select('*').eq('product_id', product_id);
+  const { data, error } = await supabase.from('reviews').select('*, users(user_nickname)').eq('product_id', product_id);
   if (error) throw error;
   return data;
 };
