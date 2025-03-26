@@ -192,16 +192,31 @@ export const signInWithGoogle = async (redirectTo: string): Promise<{ error: str
 export const updateNickname = async (newNickname: string): Promise<AuthResponse> => {
   const supabase = getBrowserClient();
 
-  const { data, error } = await supabase.auth.updateUser({
+  const { data: updateData, error: updateError } = await supabase.auth.updateUser({
     data: { user_nickname: newNickname },
   });
 
-  if (error) {
-    return { user: null, session: null, error: error.message };
+  if (updateError) {
+    return { user: null, session: null, error: updateError.message };
   }
 
-  const mappedUser = data.user ? mapSupabaseUserToUser(data.user) : null;
-  return { user: mappedUser, session: null, error: null };
+  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+  if (sessionError || !sessionData.session?.user) {
+    return { user: null, session: null, error: '세션 정보를 가져오는 중 오류가 발생했습니다.' };
+  }
+
+  const userId = sessionData.session.user.id;
+    const { error: dbError } = await supabase
+      .from('users')
+      .update({ user_nickname: newNickname })
+      .eq('user_id', userId);
+
+    if (dbError) {
+      return { user: null, session: null, error: `public.users 업데이트 중 오류: ${dbError.message}` };
+    }
+
+  const mappedUser = updateData.user ? mapSupabaseUserToUser(updateData.user) : null;
+  return { user: mappedUser, session: sessionData.session, error: null };
 };
 
 /**

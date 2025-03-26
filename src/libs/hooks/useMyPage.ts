@@ -64,14 +64,17 @@ export const useMyPage = () => {
     setSuccessMessage(null);
 
     const { user: updatedUser, session, error } = await updateNickname(nickname);
-      if (error) {
+
+    if (error) {
         setErrors((prev) => ({ ...prev, nickname: error }));
         return;
-      }
+    }
 
-      if (updatedUser && session) {
+    if (updatedUser && session) {
         setLogin(updatedUser, session.access_token);
         setSuccessMessage('닉네임이 성공적으로 변경되었습니다.');
+    } else {
+        setErrors((prev) => ({ ...prev, nickname: '사용자 정보를 업데이트할 수 없습니다.' }));
       }
   };
 
