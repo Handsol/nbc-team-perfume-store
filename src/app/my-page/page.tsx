@@ -204,7 +204,7 @@ export default function MyPage() {
                 onClick={handleUpdatePassword}
                 disabled={loading}
               >
-                {loading ? '처리 중...' : '저장'}
+                {loading ? '처리 중...' : '적용'}
               </Button>
             </div>
           </div>

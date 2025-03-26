@@ -48,6 +48,22 @@ export const useMyPage = () => {
     loadUser();
   }, [router, setLogin]);
 
+  // 2.5초 후 메세지 창 닫히도록 기능 구현
+  useEffect(() => {
+    if (successMessage || errors.nickname || errors.currentPassword || errors.newPassword || errors.confirmNewPassword) {
+      const timer = setTimeout(() => {
+        setSuccessMessage(null);
+        setErrors({
+          nickname: null,
+          currentPassword: null,
+          newPassword: null,
+          confirmNewPassword: null,
+        });
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage, errors]);
+
   const handleNicknameChange = (value: string) => {
     setNickname(value);
     const validationError = validateNickname(value);
@@ -63,20 +79,26 @@ export const useMyPage = () => {
     setLoading(true);
     setSuccessMessage(null);
 
-    const { user: updatedUser, session, error } = await updateNickname(nickname);
+    try {
+      const { user: updatedUser, session, error } = await updateNickname(nickname);
 
-    if (error) {
-        setErrors((prev) => ({ ...prev, nickname: error }));
-        return;
-    }
-
-    if (updatedUser && session) {
-        setLogin(updatedUser, session.access_token);
-        setSuccessMessage('닉네임이 성공적으로 변경되었습니다.');
-    } else {
-        setErrors((prev) => ({ ...prev, nickname: '사용자 정보를 업데이트할 수 없습니다.' }));
+      if (error) {
+          setErrors((prev) => ({ ...prev, nickname: error }));
+          return;
       }
-  };
+
+      if (updatedUser && session) {
+          setLogin(updatedUser, session.access_token);
+          setSuccessMessage('닉네임이 성공적으로 변경되었습니다.');
+      } else {
+          setErrors((prev) => ({ ...prev, nickname: '사용자 정보를 업데이트할 수 없습니다.' }));
+        }
+      } catch {
+        setErrors((prev) => ({ ...prev, nickname: '닉네임 변경 중 오류 발생' }));
+      } finally {
+        setLoading(false);
+      }
+    };
 
   const handleCurrentPasswordChange = (value: string) => {
     setCurrentPassword(value);
@@ -119,6 +141,7 @@ export const useMyPage = () => {
     setLoading(true);
     setSuccessMessage(null);
 
+    try {
     const { error } = await updatePassword(currentPassword, newPassword);
       if (error) {
         setErrors((prev) => ({ ...prev, newPassword: error }));
@@ -129,6 +152,11 @@ export const useMyPage = () => {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmNewPassword('');
+    } catch {
+      setErrors((prev) => ({ ...prev, newPassword: '비밀번호 변경 중 오류 발생' }));
+    } finally {
+      setLoading(false);
+    }
   };
 
   // 비밀번호 유효성 검사
