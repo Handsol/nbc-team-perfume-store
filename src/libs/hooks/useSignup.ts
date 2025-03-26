@@ -188,12 +188,11 @@ export const useSignup = () => {
     setLoading(true);
     setErrors({ email: null, password: null, confirmPassword: null, nickname: null, social: null });
 
-    const { user, session, error } = await signup({ email, password, nickname });
+    const { user, error } = await signup({ email, password, nickname });
 
     if (error) {
       console.error(`회원가입 실패: ${error}`);
-    } else if (user && session) {
-      setLogin(user, session.access_token);
+    } else if (user) {
       alert('회원가입 성공! 이메일을 확인해주세요.');
       setEmail('');
       setPassword('');
