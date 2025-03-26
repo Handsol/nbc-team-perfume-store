@@ -36,7 +36,7 @@ const SearchResults = () => {
         {filteredProducts.length > 0 ? (
           <ProductList products={filteredProducts} />
         ) : (
-          <p className="mt-4 text-gray-600">검색 결과가 없습니다.</p>
+          <p className="mt-4 text-gray-600">검색어에 대한 결과가 존재하지 않습니다.</p>
         )}
       </div>
     </Suspense>
