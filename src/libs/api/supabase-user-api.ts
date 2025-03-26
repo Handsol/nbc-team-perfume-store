@@ -4,6 +4,11 @@ import { SignupOptions, LoginOptions, AuthResponse, User } from '@/types/auth';
 import { getBrowserClient } from '@/utils/supabase/browserClient';
 import { AuthChangeEvent, Session, User as SupabaseUser } from '@supabase/supabase-js';
 
+enum SocialProvider {
+  Kakao = 'kakao',
+  Google = 'google'
+}
+
 /**
  * 회원가입을 처리하는 함수
  */
@@ -126,13 +131,10 @@ const mapSupabaseUserToUser = (supabaseUser: SupabaseUser): User => {
   };
 };
 
-/**
- * 카카오 소셜 로그인 함수
- */
-export const signInWithKakao = async (redirectTo: string): Promise<{ error: string | null }> => {
+const signInWithOAuth = async (provider: SocialProvider, redirectTo: string): Promise<{ error: string | null }> => {
   const supabase = getBrowserClient();
   const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'kakao',
+    provider,
     options: {
       redirectTo
     }
@@ -146,20 +148,15 @@ export const signInWithKakao = async (redirectTo: string): Promise<{ error: stri
 };
 
 /**
+ * 카카오 소셜 로그인 함수
+ */
+export const signInWithKakao = async (redirectTo: string): Promise<{ error: string | null }> => {
+  return signInWithOAuth(SocialProvider.Kakao, redirectTo);
+};
+
+/**
  * 구글 소셜 로그인 함수
  */
 export const signInWithGoogle = async (redirectTo: string): Promise<{ error: string | null }> => {
-  const supabase = getBrowserClient();
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo
-    }
-  });
-
-  if (error) {
-    return { error: error.message };
-  }
-
-  return { error: null };
+  return signInWithOAuth(SocialProvider.Google, redirectTo);
 };
