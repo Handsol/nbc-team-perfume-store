@@ -10,7 +10,30 @@ enum SocialProvider {
 }
 
 /**
+ * Supabase User를 User 인터페이스로 매핑
+ * @param supabaseUser - Supabase에서 반환된 사용자 객체
+ * @param fallbackEmail - 이메일이 없는 경우 사용할 기본 이메일
+ * @returns 매핑된 User 객체
+ * @throws 이메일이 없는 경우 에러 발생
+ */
+const mapSupabaseUserToUser = (supabaseUser: SupabaseUser): User => {
+  const email = supabaseUser.email;
+  if (!email) {
+    throw new Error('사용자 이메일이 존재하지 않습니다.');
+  }
+
+  return {
+    id: supabaseUser.id,
+    nickname: supabaseUser.user_metadata?.nickname || '',
+    email,
+    created_at: supabaseUser.created_at
+  };
+};
+
+/**
  * 회원가입을 처리하는 함수
+ * @param options - 회원가입에 필요한 정보 (이메일, 비밀번호, 닉네임)
+ * @returns 사용자 정보, 세션, 에러 메시지
  */
 export const signup = async ({ email, password, nickname }: SignupOptions): Promise<AuthResponse> => {
   const supabase = getBrowserClient();
@@ -42,6 +65,8 @@ export const signup = async ({ email, password, nickname }: SignupOptions): Prom
 
 /**
  * 로그인을 처리하는 함수
+ * @param options - 로그인에 필요한 정보 (이메일, 비밀번호)
+ * @returns 사용자 정보, 세션, 에러 메시지
  */
 export const login = async ({ email, password }: LoginOptions): Promise<AuthResponse> => {
   const supabase = getBrowserClient();
@@ -61,6 +86,7 @@ export const login = async ({ email, password }: LoginOptions): Promise<AuthResp
 
 /**
  * 로그아웃을 처리하는 함수
+ * @throws 로그아웃 실패 시 에러 발생
  */
 export const signout = async (): Promise<void> => {
   const supabase = getBrowserClient();
@@ -71,6 +97,7 @@ export const signout = async (): Promise<void> => {
 
 /**
  * 현재 로그인 상태를 확인하는 함수
+ * @returns 로그인 여부 (true: 로그인 상태, false: 로그아웃 상태)
  */
 export const isLoggedIn = async (): Promise<boolean> => {
   const supabase = getBrowserClient();
@@ -80,6 +107,7 @@ export const isLoggedIn = async (): Promise<boolean> => {
 
 /**
  * 현재 사용자와 세션 정보를 가져오는 함수
+ * @returns 사용자 정보, 세션, 에러 메시지
  */
 export const getCurrentUser = async (): Promise<AuthResponse> => {
   const supabase = getBrowserClient();
@@ -96,6 +124,8 @@ export const getCurrentUser = async (): Promise<AuthResponse> => {
 
 /**
  * 인증 상태 변화 구독 함수
+ * @param callback - 인증 상태 변화 시 호출될 콜백 함수
+ * @returns 구독 해제 함수
  */
 export const subscribeToAuthState = (
   callback: (event: AuthChangeEvent, user: User | null, session: Session | null) => void
@@ -115,22 +145,11 @@ export const subscribeToAuthState = (
 };
 
 /**
- * Supabase User를 User 인터페이스로 매핑
+ * 소셜 로그인을 처리하는 공통 함수
+ * @param provider - 소셜 로그인 제공자 (kakao, google 등)
+ * @param redirectTo - 리다이렉트 URL
+ * @returns 에러 메시지
  */
-const mapSupabaseUserToUser = (supabaseUser: SupabaseUser): User => {
-  const email = supabaseUser.email;
-  if (!email) {
-    throw new Error('사용자 이메일이 존재하지 않습니다.');
-  }
-
-  return {
-    id: supabaseUser.id,
-    nickname: supabaseUser.user_metadata?.nickname || '',
-    email,
-    created_at: supabaseUser.created_at
-  };
-};
-
 const signInWithOAuth = async (provider: SocialProvider, redirectTo: string): Promise<{ error: string | null }> => {
   const supabase = getBrowserClient();
   const { error } = await supabase.auth.signInWithOAuth({
@@ -149,6 +168,8 @@ const signInWithOAuth = async (provider: SocialProvider, redirectTo: string): Pr
 
 /**
  * 카카오 소셜 로그인 함수
+ * @param redirectTo - 리다이렉트 URL
+ * @returns 에러 메시지
  */
 export const signInWithKakao = async (redirectTo: string): Promise<{ error: string | null }> => {
   return signInWithOAuth(SocialProvider.Kakao, redirectTo);
@@ -156,6 +177,8 @@ export const signInWithKakao = async (redirectTo: string): Promise<{ error: stri
 
 /**
  * 구글 소셜 로그인 함수
+ * @param redirectTo - 리다이렉트 URL
+ * @returns 에러 메시지
  */
 export const signInWithGoogle = async (redirectTo: string): Promise<{ error: string | null }> => {
   return signInWithOAuth(SocialProvider.Google, redirectTo);
