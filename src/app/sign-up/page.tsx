@@ -24,7 +24,8 @@ export default function SignupPage() {
     handlePasswordChange,
     handleConfirmPasswordChange,
     handleNicknameChange,
-    handleSignup
+    handleSignup,
+    handleCancel
   } = useSignup();
 
   const passwordConditions = [
@@ -146,8 +147,12 @@ export default function SignupPage() {
         </div>
       )}
 
-      <Button onClick={handleSignup} disabled={loading} className="w-full py-3 text-white rounded-lg">
+      <Button onClick={handleSignup} disabled={loading} className="w-full py-3 mb-5 text-white rounded-lg">
         {loading ? '처리 중...' : '회원가입'}
+      </Button>
+
+      <Button onClick={handleCancel} className="w-full py-3 text-white rounded-lg">
+        취소
       </Button>
     </div>
   );

@@ -7,6 +7,7 @@ import { Errors, PasswordValidation } from '@/types/signup-validation';
 import { SIGNUP_ERROR_MESSAGES } from '@/constants/errorMessages/signupErrorMessages';
 import { getPasswordStrength, isAlphaNumericOnly, isValidEmail, validatePassword } from '@/utils/validation';
 import { LOGIN_ERROR_MESSAGES } from '@/constants/errorMessages/loginErrorMessages';
+import { useRouter } from 'next/navigation';
 
 export const useSignup = () => {
   const [email, setEmail] = useState('');
@@ -36,6 +37,7 @@ export const useSignup = () => {
   const [loading, setLoading] = useState(false);
 
   const { setLogin } = useAuthStore();
+  const router = useRouter();
 
   // Caps Lock 및 Num Lock 감지
   const checkKeyboardState = useCallback((event: Event) => {
@@ -208,6 +210,8 @@ export const useSignup = () => {
         noIdMatch: false,
         consecutive: false
       });
+
+      router.push('/login');
     }
 
     setLoading(false);
@@ -255,6 +259,30 @@ export const useSignup = () => {
     }
   };
 
+  // 회원가입 취소->로그인 페이지로 이동
+  const handleCancel = () => {
+    // 폼 데이터 초기화
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+    setNickname('');
+    setErrors({ email: null, password: null, confirmPassword: null, nickname: null, social: null });
+    setPasswordValidation({
+      length: false,
+      combination: false,
+      noIdMatch: false,
+      consecutive: false,
+      alphabet: false,
+      number: false,
+      special: false,
+      uppercase: false,
+      lowercase: false
+    });
+    setLoading(false);
+
+    router.push('/login');
+  };
+
   return {
     email,
     password,
@@ -272,6 +300,7 @@ export const useSignup = () => {
     handleNicknameChange,
     handleSignup,
     handleKakaoAuth,
-    handleGoogleAuth
+    handleGoogleAuth,
+    handleCancel
   };
 };
