@@ -44,47 +44,41 @@ const Search = () => {
   };
 
   return (
-    <div className="relative flex justify-center w-full">
-      <div className="relative w-[500px]">
-        {/* 검색 입력 필드 */}
-        <div className="flex flex-row w-full h-[50px] border border-gray-400 rounded-md overflow-hidden">
-          <input
-            className="w-full px-4 outline-none"
-            placeholder="오롯이 당신만의 향을 찾아보세요!"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
-            onFocus={() => setShowDropdown(true)}
-          />
-          <button onClick={handleSearch} className="px-4">
-            <Image src={'/search-button.png'} alt="search" width={30} height={30} />
-          </button>
-        </div>
-
-        {/* 최근 검색어 드롭다운, 검색어 클릭 시 자동 검색 */}
-        {showDropdown && recentSearches.length > 0 && (
-          <ul className="absolute top-full mt-1 w-full bg-white border border-gray-300 shadow-lg rounded-md overflow-hidden z-50">
-            {recentSearches.map((search, index) => (
-              <li key={index} className="flex justify-between items-center px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                <span
-                  onMouseDown={() => {
-                    setQuery(search);
-                    handleSearch();
-                  }}
-                >
-                  {search}
-                </span>
-                <button
-                  onMouseDown={() => removeSearchItem(search)}
-                  className="text-gray-500 hover:text-red-500 text-sm"
-                >
-                  ✕
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+    <div className="relative w-[500px]">
+      <div className="flex flex-row  h-[50px] border-b border-black">
+        <input
+          className="w-full px-4 outline-none"
+          placeholder="오롯이 당신만의 향을 찾아보세요!"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onFocus={() => setShowDropdown(true)}
+          onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+        />
+        <button onClick={handleSearch} className="px-4">
+          <Image src={'/search-button.png'} alt="search" width={30} height={30} />
+        </button>
       </div>
+
+      {showDropdown && recentSearches.length > 0 && (
+        <ul className="absolute top-full mt-1 w-full bg-white border border-gray-300 shadow-lg rounded-md overflow-hidden z-50">
+          {recentSearches.map((search, index) => (
+            <li key={index} className="flex justify-between items-center px-4 py-2 hover:bg-gray-100 cursor-pointer">
+              <span
+                onMouseDown={() => {
+                  setQuery(search);
+                  handleSearch();
+                }}
+              >
+                {search}
+              </span>
+              <button onMouseDown={() => removeSearchItem(search)} className="text-gray-500 hover:text-red-500 text-sm">
+                ✕
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
