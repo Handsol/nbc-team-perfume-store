@@ -74,5 +74,3 @@ export const useDeleteAllCartItem = () => {
     }
   });
 };
-
-//낙관적 업데이트 반영 예정

@@ -1,13 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { signInWithGoogle, signInWithKakao, signup } from '@/libs/api/supabase-user-api';
-import { useAuthStore } from '@/zustand/authStore';
 import { Errors, PasswordValidation } from '@/types/signup-validation';
 import { SIGNUP_ERROR_MESSAGES } from '@/constants/errorMessages/signupErrorMessages';
-import { getPasswordStrength, isAlphaNumericOnly, isValidEmail, validatePassword } from '@/utils/validation';
 import { LOGIN_ERROR_MESSAGES } from '@/constants/errorMessages/loginErrorMessages';
-import { useRouter } from 'next/navigation';
+import { getPasswordStrength, isAlphaNumericOnly, isValidEmail, validatePassword } from '@/utils/validation';
 
 export const useSignup = () => {
   const [email, setEmail] = useState('');
@@ -36,7 +35,6 @@ export const useSignup = () => {
   const [numLockOn, setNumLockOn] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { setLogin } = useAuthStore();
   const router = useRouter();
 
   // Caps Lock 및 Num Lock 감지
@@ -49,8 +47,6 @@ export const useSignup = () => {
 
     setCapsLockOn(event.getModifierState('CapsLock'));
     setNumLockOn(!event.getModifierState('NumLock')); // numlock은 이상하게 반대로 동작
-
-    // console.log('CapsLock:', event.getModifierState('CapsLock'), 'NumLock:', event.getModifierState('NumLock'));
   }, []);
 
   useEffect(() => {

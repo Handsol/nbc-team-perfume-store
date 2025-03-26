@@ -1,6 +1,6 @@
+import Image from 'next/image';
 import { useDeleteCartItem, useToggleChecked, useUpdateItemQuantity } from '@/libs/hooks/cart/mutations';
 import { TCartItem } from '@/types/cart-items';
-import Image from 'next/image';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 
@@ -11,7 +11,7 @@ type Props = {
 
 const CartItem = ({ item, fixed }: Props) => {
   const { products } = item;
-  let total = products.product_price * item.cart_quantity;
+  const total = products.product_price * item.cart_quantity;
 
   //장바구니 체크 토글 mutation
   const { mutate: toggleCheck } = useToggleChecked();
@@ -20,7 +20,7 @@ const CartItem = ({ item, fixed }: Props) => {
   const { mutate: updateItemQuantity } = useUpdateItemQuantity();
   //아이템 수량 변경
   const handleQuantity = (cartId: TCartItem['cart_id'], currentQuantity: number, add: boolean) => {
-    let updatedQuantity = add ? currentQuantity + 1 : currentQuantity - 1;
+    const updatedQuantity = add ? currentQuantity + 1 : currentQuantity - 1;
     updateItemQuantity({ cartId, quantity: updatedQuantity });
   };
 

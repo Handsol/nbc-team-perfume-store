@@ -1,7 +1,7 @@
-import Caroucel from '@/components/main/CarouselSection';
-import ProductSection from '@/components/main/ProductSection';
 import { getAllProducts } from '@/libs/api/product/product-api';
 import { filterByCategory } from '@/utils/filterByCategory';
+import Caroucel from '@/components/main/CarouselSection';
+import ProductSection from '@/components/main/ProductSection';
 
 const MAN_CATEGORIES = ['manEDT', 'manEDP', 'manEDC', 'manHP'] as const;
 const WOMAN_CATEGORIES = ['womanEDT', 'womanEDP', 'womanEDC', 'womanHP'] as const;

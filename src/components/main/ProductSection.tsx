@@ -1,8 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import ProductCard from './ProductCard';
 import { Products } from '@/types/products';
+import ProductCard from './ProductCard';
 
 interface ProductSectionProps {
   title: string;

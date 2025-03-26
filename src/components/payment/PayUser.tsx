@@ -1,9 +1,9 @@
 'use client';
 
-import { useAuthStore } from '@/zustand/authStore';
-import { Input } from '../ui/input';
 import { ChangeEvent, useState } from 'react';
+import { useAuthStore } from '@/zustand/authStore';
 import { AuthState } from '@/types/auth';
+import { Input } from '../ui/input';
 
 const PayUser = () => {
   const user = useAuthStore<AuthState['user']>((state) => state.user);
@@ -56,14 +56,7 @@ const PayUser = () => {
         <div className="container flex flex-row items-center gap-6">
           <p className="w-32">연락처</p>
           <div className="flex w-full items-center">
-            <Input
-              type="tel"
-              placeholder="연락처"
-              required
-              className="h-12"
-              name="phone"
-              onChange={handleUserInput}
-            />
+            <Input type="tel" placeholder="연락처" required className="h-12" name="phone" onChange={handleUserInput} />
           </div>
         </div>
       </div>

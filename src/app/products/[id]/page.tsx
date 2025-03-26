@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { getProductDetails } from '@/libs/api/product/product-api';
 import ProductDetail from '@/components/product/ProductDetail';
-
 import ProductSelector from '@/components/product/ProductSelector';
 import ReviewContainer from '@/components/review/ReviewContainer';
 

@@ -1,16 +1,17 @@
 'use client';
-import { Products, ProductListProps } from '@/types/products';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { ProductListProps } from '@/types/products';
 
 const ProductList = ({ products }: ProductListProps) => {
   return (
     <div className="container mx-auto px-4 py-8">
-      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {products.map((product) => (
           <li
             key={product.product_id}
-            className="bg-white border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+            className="overflow-hidden rounded-lg border bg-white shadow-md transition-shadow duration-300 hover:shadow-lg"
           >
             {/* 제품 상세 페이지 이동 링크 */}
             <Link href={`/products/${product.product_id}`}>
@@ -19,10 +20,10 @@ const ProductList = ({ products }: ProductListProps) => {
                 alt={product.product_title}
                 width={200}
                 height={48}
-                className="w-full h-48 object-cover"
+                className="h-48 w-full object-cover"
               />
-              <h2 className="text-lg font-semibold text-gray-800 truncate">{product.product_brand}</h2>
-              <p className="text-base text-gray-600 mt-1">{product.product_title}</p>
+              <h2 className="text-gray-800 truncate text-lg font-semibold">{product.product_brand}</h2>
+              <p className="text-gray-600 mt-1 text-base">{product.product_title}</p>
               <p>{product.product_price.toLocaleString()}원</p>
             </Link>
           </li>

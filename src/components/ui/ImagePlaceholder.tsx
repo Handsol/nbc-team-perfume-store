@@ -1,8 +1,5 @@
 import Image from 'next/image';
 
-// fill? 은 이미지 삽입 시 fill 속성이 있는지 확인하고,
-// fill이 true라면 width와 height 속성을 제거합니다.
-
 interface ImagePlaceholderProps {
   src: string;
   alt?: string;
