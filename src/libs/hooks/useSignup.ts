@@ -1,11 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { signup } from '@/libs/api/supabase-user-api';
+import { signInWithKakao, signup } from '@/libs/api/supabase-user-api';
 import { useAuthStore } from '@/zustand/authStore';
 import { Errors, PasswordValidation } from '@/types/signup-validation';
 import { SIGNUP_ERROR_MESSAGES } from '@/constants/errorMessages/signupErrorMessages';
 import { getPasswordStrength, isAlphaNumericOnly, isValidEmail, validatePassword } from '@/utils/validation';
+import { LOGIN_ERROR_MESSAGES } from '@/constants/errorMessages/loginErrorMessages';
 
 export const useSignup = () => {
   const [email, setEmail] = useState('');
@@ -204,6 +205,25 @@ export const useSignup = () => {
 
   const passwordStrength = password ? getPasswordStrength(passwordValidation) : '';
 
+  // 카카오 회원가입/로그인 처리
+  const handleKakaoAuth = async () => {
+    setLoading(true);
+    setErrors((prev) => ({ ...prev, social: null }));
+
+    try {
+      const { error } = await signInWithKakao(`${window.location.origin}/auth/callback`);
+
+      if (error) {
+        setErrors((prev) => ({ ...prev, social: LOGIN_ERROR_MESSAGES.social.kakao.failed }));
+        setLoading(false);
+        return;
+      }
+    } catch {
+      setErrors((prev) => ({ ...prev, social: LOGIN_ERROR_MESSAGES.social.kakao.error }));
+      setLoading(false);
+    }
+  };
+
   return {
     email,
     password,
@@ -219,6 +239,7 @@ export const useSignup = () => {
     handlePasswordChange,
     handleConfirmPasswordChange,
     handleNicknameChange,
-    handleSignup
+    handleSignup,
+    handleKakaoAuth
   };
 };
