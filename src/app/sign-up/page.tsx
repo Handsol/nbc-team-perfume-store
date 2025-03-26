@@ -24,9 +24,7 @@ export default function SignupPage() {
     handlePasswordChange,
     handleConfirmPasswordChange,
     handleNicknameChange,
-    handleSignup,
-    handleKakaoAuth,
-    handleGoogleAuth
+    handleSignup
   } = useSignup();
 
   const passwordConditions = [
@@ -168,23 +166,6 @@ export default function SignupPage() {
       <Button onClick={handleSignup} disabled={loading}>
         {loading ? '처리 중...' : '회원가입'}
       </Button>
-
-      <div className="flex space-x-2">
-        <Button
-          onClick={handleKakaoAuth}
-          disabled={loading}
-          className="w-full bg-yellow-400 text-black hover:bg-yellow-500"
-        >
-          카카오로 회원가입
-        </Button>
-        <Button
-          onClick={handleGoogleAuth}
-          disabled={loading}
-          className="w-full bg-white text-black border border-gray-300 hover:bg-gray-100"
-        >
-          구글로 회원가입
-        </Button>
-      </div>
     </div>
   );
 }
