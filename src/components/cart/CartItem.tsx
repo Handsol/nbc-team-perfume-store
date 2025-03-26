@@ -2,6 +2,7 @@ import { useDeleteCartItem, useToggleChecked, useUpdateItemQuantity } from '@/li
 import { TCartItem } from '@/types/cart-items';
 import Image from 'next/image';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
 
 type Props = {
   item: TCartItem;
@@ -34,49 +35,54 @@ const CartItem = ({ item, fixed }: Props) => {
   };
 
   return (
-    <li className="relative flex flex-wrap py-8 px-4 mb-6 items-start justify-between bg-lightgray" key={item.cart_id}>
-      <Checkbox
-        onCheckedChange={() => toggleCheck({ cartId: item.cart_id, checked: !item.cart_checked })}
-        className="flex items-start mr-4"
-      />
-  
+    <li className="relative mb-6 flex flex-wrap items-start justify-between bg-lightgray px-4 py-8" key={item.cart_id}>
+      {fixed ? (
+        <></>
+      ) : (
+        <Checkbox
+          checked={item.cart_checked}
+          onCheckedChange={() => toggleCheck({ cartId: item.cart_id, checked: item.cart_checked })}
+          className="mr-4 flex items-start"
+        />
+      )}
+
       <div className="mr-4">
         <Image src={products.product_thumbnail} alt={products.product_title} width={200} height={100} />
       </div>
-      <div className="flex flex-col min-h-10 w-96 mr-4 mt-4 justify-between">
+      <div className="min-h-10 mr-4 mt-4 flex w-96 flex-col justify-between">
         <div className="mb-8">
-          <h2 className="font-bold mb-4 ">{products.product_brand}</h2>
+          <h2 className="mb-4 font-bold">{products.product_brand}</h2>
           <h3>{products.product_title}</h3>
         </div>
       </div>
       {fixed ? (
-        <></>
+        <>
+          <div className="border-box h-9 w-16 text-center leading-8">수량: {item.cart_quantity}</div>
+        </>
       ) : (
         <>
-          <div className="flex flex-col w-32 mx-4 pt-10">
-            <div className="text-2xl font-bold mb-2 text-black">
+          <div className="mx-4 flex w-32 flex-col pt-10">
+            <div className="mb-2 text-2xl font-bold text-black">
               {total.toLocaleString()} <span className="text-base font-normal">원</span>
             </div>
-            <div className="flex">
-              <button
-                className="border-2 border-box w-9 h-9 "
+            <div className="flex items-center">
+              <Button
+                className="border-gray-300 hover:bg-gray-100 border px-3 py-1 text-lg"
                 onClick={() => handleQuantity(item.cart_id, item.cart_quantity, false)}
               >
                 -
-              </button>
-              <div className="text-center border-2 border-box w-16 h-9 leading-8">{item.cart_quantity}</div>
-              <button
-                className="border-2 border-box w-9 h-9"
+              </Button>
+              <span className="text-gray-900 mx-4 text-lg font-semibold">{item.cart_quantity}</span>
+              <Button
+                className="border-gray-300 hover:bg-gray-100 border px-3 py-1 text-lg"
                 onClick={() => handleQuantity(item.cart_id, item.cart_quantity, true)}
               >
                 +
-              </button>
+              </Button>
             </div>
           </div>
           <div className="mx-4 pt-16">
-            <button onClick={() => handleDeleteItem(item.cart_id)} className="border-2 p-2">
-              삭제
-            </button>
+            <Button onClick={() => handleDeleteItem(item.cart_id)}>삭제</Button>
           </div>
         </>
       )}

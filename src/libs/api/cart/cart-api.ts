@@ -81,12 +81,12 @@ export const toggleCartItemChecked = async ({
   
   const { data: checkedData, error: checkedError } = await supabase
     .from('carts')
-    .update({ cart_checked: checked })
+    .update({ cart_checked: !checked })
     .eq('cart_id', cartId)
     .select()
     .single();
   if (checkedError) throw checkedError;
-
+console.log(checkedData.cart_checked)
   return checkedData;
 };
 
