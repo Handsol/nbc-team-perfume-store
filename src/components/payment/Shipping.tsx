@@ -6,7 +6,7 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 
 const Shipping = () => {
-  const [userFullAddress, setFullAddress] = useState('');
+  const [userFullAddress, setUserFullAddress] = useState('');
   const [userZoneCode, setZoneCode] = useState('');
   const [userExtraAddress, setExtraAddress] = useState('');
   const [userDetailAddress, setUserDetailAddress] = useState('');
@@ -15,7 +15,6 @@ const Shipping = () => {
   const open = useDaumPostcodePopup(postcodeScriptUrl);
 
   const handleComplete = (data: TAddress) => {
-    console.log(data);
     let fullAddress = data.address; // 주소 변수
     let extraAddress = ''; // 참고항목 변수
     let zoneCode = data.zonecode; //우편번호 변수
@@ -29,12 +28,12 @@ const Shipping = () => {
       }
       // fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-    setFullAddress(fullAddress);
+    setUserFullAddress(fullAddress);
     setZoneCode(zoneCode);
     setExtraAddress(extraAddress);
   };
 
-  const handleClick = () => {
+  const handleGetAddress = () => {
     open({ onComplete: handleComplete });
   };
 
@@ -47,7 +46,7 @@ const Shipping = () => {
           <div className="flex flex-col gap-2 w-full">
             <div className="flex items-center w-full gap-3">
               <Input type="text" defaultValue={userZoneCode} placeholder="우편번호" required className="h-12" />
-              <Button type="submit" onClick={handleClick} className="h-12">
+              <Button type="submit" onClick={handleGetAddress} className="h-12">
                 우편번호 검색
               </Button>
             </div>
@@ -65,7 +64,7 @@ const Shipping = () => {
             />
           </div>
         </div>
-        <div className="flex flex-row gap-6 container">
+        <div className="flex flex-row gap-6 container items-center">
           <p className="w-32">배송 메시지</p>
           <div className="flex items-center w-full">
             <Input placeholder="ex) 배송 전 연락주세요." className="h-12" />
