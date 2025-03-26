@@ -9,7 +9,7 @@ const PayMethod = () => {
   const [selectedMethod, setSelectedMethod] = useState(methods[0]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto p-4">
       <h2 className="text-xl mb-4">결제 정보</h2>
       <h2>결제금액 : <span className='font-semibold'>{selectedTotal.toLocaleString()}</span>원</h2>
       <div className="items-stretch flex flex-col justify-start py-6  px-8">
