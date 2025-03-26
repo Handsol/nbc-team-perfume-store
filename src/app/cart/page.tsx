@@ -13,11 +13,13 @@ import Loading from '../loading';
 const CartPage = () => {
   const user = useAuthStore((state) => state.user);
   const [userId, setUserId] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
   const [queryClient] = useState(() => new QueryClient());
 
   useEffect(() => {
     if (user) {
       setUserId(user.id);
+      setIsLoading(false);
     }
   }, [user]);
   useEffect(() => {
@@ -27,19 +29,18 @@ const CartPage = () => {
     });
   }, [queryClient, userId]);
 
-  // userId가 없는 상태
-  if (!userId) {
+  if (isLoading) {
+    return <span className="loader"> loading...</span>;
+  } else if (!userId) {
     return (
-      <Suspense fallback={<Loading />}>
         <div className="container mx-auto mt-10 flex flex-col items-center justify-center">
           <p>로그인 후 이용해주세요</p>
-          <div className="flex justify-center items-center">
+          <div className="flex items-center justify-center">
             <Link className={buttonVariants({ variant: 'default' })} href={'/login'}>
               로그인 하러가기
             </Link>
           </div>
         </div>
-      </Suspense>
     );
   }
 
