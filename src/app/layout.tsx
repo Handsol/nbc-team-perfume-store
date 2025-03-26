@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Header from '@/components/layout/Header';
-import Navibar from '@/components/layout/Navibar';
 import Provider from './provider';
+import Header from '@/components/layout/Header';
+import Navbar from '@/components/layout/Navbar';
 
 export const metadata: Metadata = {
   title: 'OROT - 오롯이 당신만의 향',
@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <Header />
-        <Navibar />
+        <Navbar />
         <Provider>{children}</Provider>
       </body>
     </html>

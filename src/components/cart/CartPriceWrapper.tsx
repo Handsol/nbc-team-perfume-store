@@ -1,11 +1,12 @@
 'use client';
 
-import { TCartItem } from '@/types/cart-items';
 import Link from 'next/link';
-import { buttonVariants } from '@/components/ui/button';
-import useCartStore from '@/zustand/cart-store';
+
 import { useState, useEffect } from 'react';
+import { TCartItem } from '@/types/cart-items';
+import useCartStore from '@/zustand/cart-store';
 import { calculateTotal } from '@/utils/purchase';
+import { buttonVariants } from '@/components/ui/button';
 
 type Props = {
   cartItemList: TCartItem[];
@@ -19,12 +20,11 @@ const CartPriceWrapper = ({ cartItemList }: Props) => {
 
   useEffect(() => {
     const { total, shippingPay, checkedList } = calculateTotal(cartItemList);
-    console.log(total, checkedList);
     setTotal(total);
     setShippingPay(shippingPay);
     cartStatus.setSelectedItems(checkedList);
     cartStatus.setSelectedTotal(total); // 총 금액 상태 저장
-  }, [cartItemList]);
+  }, [cartItemList, cartStatus]);
 
   return (
     <div className="w-full min-w-[360px] grow bg-black p-2 xl:w-80">

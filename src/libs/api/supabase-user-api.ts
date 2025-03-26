@@ -47,15 +47,6 @@ export const signup = async ({ email, password, nickname }: SignupOptions): Prom
 
   const mappedUser = data.user ? mapSupabaseUserToUser(data.user) : null;
 
-  // supabase 설정으로 public user 테이블에 바로 들어가게 되어 아래 코드 주석 처리
-  // if (!error && mappedUser) {
-  //   // public.users에 사용자 추가
-  //   const { error: insertError } = await supabase
-  //     .from('users')
-  //     .insert([{ id: mappedUser.id, nickname, email, created_at: mappedUser.created_at }]);
-  //   if (insertError) console.error('Insert Error:', insertError);
-  // }
-
   return {
     user: mappedUser,
     session: data.session,

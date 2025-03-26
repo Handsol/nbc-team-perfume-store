@@ -1,7 +1,7 @@
 'use client';
 
-import { useSearch } from '@/libs/hooks/useSearch';
 import Image from 'next/image';
+import { useSearch } from '@/libs/hooks/useSearch';
 
 const Search = () => {
   const {

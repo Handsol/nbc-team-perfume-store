@@ -7,10 +7,8 @@ import { buttonVariants } from '@/components/ui/button';
 const PaymentSuccessPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    // console.log('유즈이펙트 실행');
     setTimeout(() => {
       setIsLoading(false);
-      // console.log('유즈이펙트 실행완료');
     }, 1000);
   }, []);
 

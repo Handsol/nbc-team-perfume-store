@@ -1,14 +1,12 @@
 'use client';
 
-import CartItemList from '@/components/cart/CartItemList';
-import { getCartItemList } from '@/libs/api/cart/cart-api';
-import { TCartItem } from '@/types/cart-items';
-import { useAuthStore } from '@/zustand/authStore';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import { getCartItemList } from '@/libs/api/cart/cart-api';
+import { useAuthStore } from '@/zustand/authStore';
+import CartItemList from '@/components/cart/CartItemList';
 import { buttonVariants } from '@/components/ui/button';
-import Loading from '../loading';
 
 const CartPage = () => {
   const user = useAuthStore((state) => state.user);
@@ -33,14 +31,14 @@ const CartPage = () => {
     return <span className="loader"> loading...</span>;
   } else if (!userId) {
     return (
-        <div className="container mx-auto mt-10 flex flex-col items-center justify-center">
-          <p>로그인 후 이용해주세요</p>
-          <div className="flex items-center justify-center">
-            <Link className={buttonVariants({ variant: 'default' })} href={'/login'}>
-              로그인 하러가기
-            </Link>
-          </div>
+      <div className="container mx-auto mt-10 flex flex-col items-center justify-center">
+        <p>로그인 후 이용해주세요</p>
+        <div className="flex items-center justify-center">
+          <Link className={buttonVariants({ variant: 'default' })} href={'/login'}>
+            로그인 하러가기
+          </Link>
         </div>
+      </div>
     );
   }
 

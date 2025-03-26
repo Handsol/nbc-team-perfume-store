@@ -1,13 +1,14 @@
 'use client';
-import { useState } from 'react';
-import { Button } from '../ui/button';
-import { Products } from '@/types/products';
-import { useAuthStore } from '@/zustand/authStore';
-import { useAddCartItem } from '@/libs/hooks/cart/mutations';
+
 import { useRouter } from 'next/navigation';
-import { calculateTotal } from '@/utils/purchase';
+import { useState } from 'react';
+import { useAddCartItem } from '@/libs/hooks/cart/mutations';
+import { useAuthStore } from '@/zustand/authStore';
 import useCartStore from '@/zustand/cart-store';
+import { Products } from '@/types/products';
 import { TCartItem } from '@/types/cart-items';
+import { calculateTotal } from '@/utils/purchase';
+import { Button } from '../ui/button';
 
 type Props = Pick<Products, 'product_price' | 'product_id' | 'product_brand' | 'product_thumbnail' | 'product_title'>;
 
