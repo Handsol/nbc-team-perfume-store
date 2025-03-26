@@ -1,15 +1,17 @@
 "use client"
-
+import useCartStore from '@/zustand/cart-store';
 import { useState } from 'react';
 
 const PayMethod = () => {
+    const selectedTotal = useCartStore(((state)=>state.selectedTotal))
+  
   const methods = ['신용·체크카드', '네이버페이', '카카오페이', '페이코', '토스페이', '가상계좌', '휴대폰'];
-  const imgMethods = [{ name: '신용·체크카드', img: '/public' }];
   const [selectedMethod, setSelectedMethod] = useState(methods[0]);
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h2 className="text-xl mb-4">결제 정보</h2>
+      <h2>결제금액 : <span className='font-semibold'>{selectedTotal.toLocaleString()}</span>원</h2>
       <div className="items-stretch flex flex-col justify-start py-6  px-8">
         <div className="h-full flex flex-wrap">
           {methods.map((item,index) => {
@@ -33,6 +35,7 @@ const PayMethod = () => {
               </div>
             );
           })}
+         
         </div>
       </div>
     </div>
