@@ -42,7 +42,7 @@ const Shipping = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto p-4">
       <h2 className="mb-4 text-xl">배송 정보</h2>
       <div className="flex flex-col justify-start gap-6 px-8 py-6">
         <div className="container flex flex-row gap-6">
