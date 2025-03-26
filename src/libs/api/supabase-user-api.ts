@@ -17,14 +17,7 @@ export const signup = async ({ email, password, nickname }: SignupOptions): Prom
     }
   });
 
-  const mappedUser = data.user
-    ? {
-        id: data.user.id,
-        nickname: data.user.user_metadata?.user_nickname || nickname,
-        email: data.user.email || email,
-        created_at: data.user.created_at
-      }
-    : null;
+  const mappedUser = data.user ? mapSupabaseUserToUser(data.user) : null;
 
   // supabase 설정으로 public user 테이블에 바로 들어가게 되어 아래 코드 주석 처리
   // if (!error && mappedUser) {
@@ -52,14 +45,7 @@ export const login = async ({ email, password }: LoginOptions): Promise<AuthResp
     password
   });
 
-  const mappedUser = data.user
-    ? {
-        id: data.user.id,
-        nickname: data.user.user_metadata?.user_nickname || '',
-        email: data.user.email || email,
-        created_at: data.user.created_at
-      }
-    : null;
+  const mappedUser = data.user ? mapSupabaseUserToUser(data.user) : null;
 
   return {
     user: mappedUser,
@@ -94,14 +80,7 @@ export const getCurrentUser = async (): Promise<AuthResponse> => {
   const supabase = getBrowserClient();
   const { data, error } = await supabase.auth.getSession();
 
-  const mappedUser = data.session?.user
-    ? {
-        id: data.session.user.id,
-        nickname: data.session.user.user_metadata?.user_nickname || '',
-        email: data.session.user.email || '',
-        created_at: data.session.user.created_at
-      }
-    : null;
+  const mappedUser = data.session?.user ? mapSupabaseUserToUser(data.session.user) : null;
 
   return {
     user: mappedUser,
