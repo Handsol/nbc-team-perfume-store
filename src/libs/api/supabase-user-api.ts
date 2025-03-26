@@ -1,7 +1,8 @@
 'use client';
 
-import { SignupOptions, LoginOptions, AuthResponse } from '@/types/auth';
+import { SignupOptions, LoginOptions, AuthResponse, User } from '@/types/auth';
 import { getBrowserClient } from '@/utils/supabase/browserClient';
+import { AuthChangeEvent, Session, User as SupabaseUser } from '@supabase/supabase-js';
 
 /**
  * 회원가입을 처리하는 함수
@@ -106,6 +107,43 @@ export const getCurrentUser = async (): Promise<AuthResponse> => {
     user: mappedUser,
     session: data.session,
     error: error?.message || null
+  };
+};
+
+/**
+ * 인증 상태 변화 구독 함수
+ */
+export const subscribeToAuthState = (
+  callback: (event: AuthChangeEvent, user: User | null, session: Session | null) => void
+): { unsubscribe: () => void } => {
+  const supabase = getBrowserClient();
+  const { data: subscription } = supabase.auth.onAuthStateChange((event, session) => {
+    let mappedUser: User | null = null;
+    if (session && session.user) {
+      mappedUser = mapSupabaseUserToUser(session.user);
+    }
+    callback(event, mappedUser, session);
+  });
+
+  return {
+    unsubscribe: () => subscription.subscription.unsubscribe()
+  };
+};
+
+/**
+ * Supabase User를 User 인터페이스로 매핑
+ */
+const mapSupabaseUserToUser = (supabaseUser: SupabaseUser): User => {
+  const email = supabaseUser.email;
+  if (!email) {
+    throw new Error('사용자 이메일이 존재하지 않습니다.');
+  }
+
+  return {
+    id: supabaseUser.id,
+    nickname: supabaseUser.user_metadata?.nickname || '',
+    email,
+    created_at: supabaseUser.created_at
   };
 };
 
