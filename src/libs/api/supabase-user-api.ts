@@ -183,3 +183,56 @@ export const signInWithKakao = async (redirectTo: string): Promise<{ error: stri
 export const signInWithGoogle = async (redirectTo: string): Promise<{ error: string | null }> => {
   return signInWithOAuth(SocialProvider.Google, redirectTo);
 };
+
+/**
+ * 닉네임 업데이트 함수
+ * @param newNickname - 새로운 닉네임
+ * @returns 업데이트된 사용자 정보, 세션, 에러 메시지
+ */
+export const updateNickname = async (newNickname: string): Promise<AuthResponse> => {
+  const supabase = getBrowserClient();
+
+  const { data, error } = await supabase.auth.updateUser({
+    data: { user_nickname: newNickname },
+  });
+
+  if (error) {
+    return { user: null, session: null, error: error.message };
+  }
+
+  const mappedUser = data.user ? mapSupabaseUserToUser(data.user) : null;
+  return { user: mappedUser, session: null, error: null };
+};
+
+/**
+ * 비밀번호 업데이트 함수
+ * @param currentPassword - 현재 비밀번호
+ * @param newPassword - 새 비밀번호
+ * @returns 에러 메시지
+ */
+export const updatePassword = async (
+  currentPassword: string,
+  newPassword: string
+): Promise<{ error: string | null }> => {
+  const supabase = getBrowserClient();
+  
+  // 현재 비밀번호로 로그인 시도하여 유효성 확인
+  const { data: sessionData, error: loginError } = await supabase.auth.signInWithPassword({
+    email: (await getCurrentUser()).user?.email || '',
+    password: currentPassword,
+  });
+
+  if (loginError || !sessionData.session) {
+    return { error: '현재 비밀번호가 올바르지 않습니다.' };
+  }
+
+  const { error: updateError } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  if (updateError) {
+    return { error: updateError.message };
+  }
+
+  return { error: null };
+};
