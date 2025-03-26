@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import Search from '../Search';
+import Search from '../search/Search';
 import { useAuthStore } from '@/zustand/authStore';
 import { useAuthCheck } from '@/libs/hooks/useAuthCheck';
 import { useLogout } from '@/libs/hooks/useLogout';
