@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { signInWithKakao, signup } from '@/libs/api/supabase-user-api';
+import { signInWithGoogle, signInWithKakao, signup } from '@/libs/api/supabase-user-api';
 import { useAuthStore } from '@/zustand/authStore';
 import { Errors, PasswordValidation } from '@/types/signup-validation';
 import { SIGNUP_ERROR_MESSAGES } from '@/constants/errorMessages/signupErrorMessages';
@@ -225,6 +225,26 @@ export const useSignup = () => {
     }
   };
 
+  // 구글 회원가입/로그인 처리
+  // 참고: https://velog.io/@jntantmsemt/supabase-%EC%86%8C%EC%85%9C%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EA%B5%AC%EA%B8%80-%EB%A1%9C%EA%B7%B8%EC%9D%B8
+  const handleGoogleAuth = async () => {
+    setLoading(true);
+    setErrors((prev) => ({ ...prev, social: null }));
+
+    try {
+      const { error } = await signInWithGoogle(`${window.location.origin}/auth/callback`);
+
+      if (error) {
+        setErrors((prev) => ({ ...prev, social: LOGIN_ERROR_MESSAGES.social.google.failed }));
+        setLoading(false);
+        return;
+      }
+    } catch {
+      setErrors((prev) => ({ ...prev, social: LOGIN_ERROR_MESSAGES.social.google.error }));
+      setLoading(false);
+    }
+  };
+
   return {
     email,
     password,
@@ -241,6 +261,7 @@ export const useSignup = () => {
     handleConfirmPasswordChange,
     handleNicknameChange,
     handleSignup,
-    handleKakaoAuth
+    handleKakaoAuth,
+    handleGoogleAuth
   };
 };
