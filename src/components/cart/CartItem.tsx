@@ -2,6 +2,7 @@ import { useDeleteCartItem, useToggleChecked, useUpdateItemQuantity } from '@/li
 import { TCartItem } from '@/types/cart-items';
 import Image from 'next/image';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
 
 type Props = {
   item: TCartItem;
@@ -64,26 +65,24 @@ const CartItem = ({ item, fixed }: Props) => {
             <div className="mb-2 text-2xl font-bold text-black">
               {total.toLocaleString()} <span className="text-base font-normal">원</span>
             </div>
-            <div className="flex">
-              <button
-                className="border-box h-9 w-9 border-2"
+            <div className="flex items-center">
+              <Button
+                className="border-gray-300 hover:bg-gray-100 border px-3 py-1 text-lg"
                 onClick={() => handleQuantity(item.cart_id, item.cart_quantity, false)}
               >
                 -
-              </button>
-              <div className="border-box h-9 w-16 border-2 text-center leading-8">{item.cart_quantity}</div>
-              <button
-                className="border-box h-9 w-9 border-2"
+              </Button>
+              <span className="text-gray-900 mx-4 text-lg font-semibold">{item.cart_quantity}</span>
+              <Button
+                className="border-gray-300 hover:bg-gray-100 border px-3 py-1 text-lg"
                 onClick={() => handleQuantity(item.cart_id, item.cart_quantity, true)}
               >
                 +
-              </button>
+              </Button>
             </div>
           </div>
           <div className="mx-4 pt-16">
-            <button onClick={() => handleDeleteItem(item.cart_id)} className="border-2 p-2">
-              삭제
-            </button>
+            <Button onClick={() => handleDeleteItem(item.cart_id)}>삭제</Button>
           </div>
         </>
       )}
