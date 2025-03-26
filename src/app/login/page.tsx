@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useSignup } from '@/libs/hooks/useSignup';
 
 export default function LoginPage() {
-  const { handleKakaoAuth } = useSignup();
+  const { handleKakaoAuth, handleGoogleAuth } = useSignup();
   const { email, setEmail, password, setPassword, error, loading, handleLogin } = useLogin();
 
   return (
@@ -41,7 +41,11 @@ export default function LoginPage() {
         >
           카카오로 로그인
         </Button>
-        <Button disabled={loading} className="w-full bg-white text-black border border-gray-300 hover:bg-gray-100">
+        <Button
+          onClick={handleGoogleAuth}
+          disabled={loading}
+          className="w-full bg-white text-black border border-gray-300 hover:bg-gray-100"
+        >
           구글로 로그인
         </Button>
       </div>
