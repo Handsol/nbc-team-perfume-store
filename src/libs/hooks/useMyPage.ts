@@ -15,6 +15,8 @@ interface UpdateErrors {
 export const useMyPage = () => {
   const router = useRouter();
   const { user, setLogin } = useAuthStore();
+  const [activeTab, setActiveTab] = useState('profile');
+  const [email, setEmail] = useState(user?.email || '');
   const [nickname, setNickname] = useState(user?.nickname || '');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -32,12 +34,14 @@ export const useMyPage = () => {
   // 사용자 정보 로드
   useEffect(() => {
     const loadUser = async () => {
-      const { user: fetchedUser, error } = await getCurrentUser();
+      const { user: fetchedUser, provider: fetchedProvider, error } = await getCurrentUser();
       if (error || !fetchedUser) {
         router.push('/login'); // 로그인 상태가 아니면 로그인 페이지로 리다이렉트
         return;
       }
+      setEmail(fetchedUser.email);
       setNickname(fetchedUser.nickname);
+      setProvider(fetchedProvider || 'email');
     };
 
     loadUser();
@@ -82,7 +86,7 @@ export const useMyPage = () => {
   // 비밀번호 입력 핸들러
   const handleCurrentPasswordChange = (value: string) => {
     setCurrentPassword(value);
-    if (!value) {
+    if (provider === 'email' && !value) {
       setErrors((prev) => ({ ...prev, currentPassword: '현재 비밀번호를 입력해주세요.' }));
     } else {
       setErrors((prev) => ({ ...prev, currentPassword: null }));
@@ -143,6 +147,10 @@ export const useMyPage = () => {
   };
 
   return {
+    activeTab,
+    setActiveTab,
+    provider,
+    email,
     nickname,
     handleNicknameChange,
     handleUpdateNickname,
