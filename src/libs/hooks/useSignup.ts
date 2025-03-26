@@ -206,6 +206,7 @@ export const useSignup = () => {
   const passwordStrength = password ? getPasswordStrength(passwordValidation) : '';
 
   // 카카오 회원가입/로그인 처리
+  // 참고: https://euni8917.tistory.com/575
   const handleKakaoAuth = async () => {
     setLoading(true);
     setErrors((prev) => ({ ...prev, social: null }));
