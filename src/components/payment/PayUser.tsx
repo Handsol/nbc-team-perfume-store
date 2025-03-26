@@ -3,12 +3,11 @@
 import { useAuthStore } from '@/zustand/authStore';
 import { Input } from '../ui/input';
 import { ChangeEvent, useState } from 'react';
-import { usePayStore, TPayStore } from '@/zustand/pay-store';
 import { AuthState } from '@/types/auth';
 
 const PayUser = () => {
   const user = useAuthStore<AuthState['user']>((state) => state.user);
-  const [userState, setUserState] = useState<TPayStore['orderUser']>({
+  const [userState, setUserState] = useState({
     nickname: '',
     email: '',
     phone: 0
@@ -58,7 +57,7 @@ const PayUser = () => {
           <p className="w-32">연락처</p>
           <div className="flex w-full items-center">
             <Input
-              type="number"
+              type="tel"
               placeholder="연락처"
               required
               className="h-12"
