@@ -1,9 +1,16 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 const Navibar = () => {
   const router = useRouter();
+  const pathname = usePathname();
+
+  if (pathname === '/sign-up' || pathname === '/login') {
+    return null;
+  }
+
   {
     /* 카테고리 필터링 함수 : 버튼 클릭 시 URL 업데이트*/
   }
@@ -19,6 +26,7 @@ const Navibar = () => {
     코롱: 'EDC',
     헤어퍼퓸: 'HP'
   };
+
   return (
     <div className="flex w-full border-b border-lightgray">
       <div className="flex w-full max-w-[1000px] h-[50px] mx-auto divide-x divide-[#d3d3d3]">
