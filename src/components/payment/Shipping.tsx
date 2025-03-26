@@ -6,10 +6,12 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 
 const Shipping = () => {
-  const [userFullAddress, setUserFullAddress] = useState('');
-  const [userZoneCode, setZoneCode] = useState('');
-  const [userExtraAddress, setExtraAddress] = useState('');
   const [userDetailAddress, setUserDetailAddress] = useState('');
+  const [shippingInfo, setShippingInfo] = useState({
+    fullAddress: '',
+    zoneCode: '',
+    extraAddress: ''
+  });
   const postcodeScriptUrl = 'http://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
 
   const open = useDaumPostcodePopup(postcodeScriptUrl);
@@ -28,9 +30,11 @@ const Shipping = () => {
       }
       // fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-    setUserFullAddress(fullAddress);
-    setZoneCode(zoneCode);
-    setExtraAddress(extraAddress);
+    setShippingInfo({
+      fullAddress,
+      extraAddress,
+      zoneCode
+    });
   };
 
   const handleGetAddress = () => {
@@ -39,20 +43,20 @@ const Shipping = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="text-xl mb-4">배송 정보</h2>
-      <div className="flex flex-col gap-6 justify-start py-6 px-8">
-        <div className="flex flex-row gap-6 container">
+      <h2 className="mb-4 text-xl">배송 정보</h2>
+      <div className="flex flex-col justify-start gap-6 px-8 py-6">
+        <div className="container flex flex-row gap-6">
           <p className="w-32"> 받는 분</p>
-          <div className="flex flex-col gap-2 w-full">
-            <div className="flex items-center w-full gap-3">
-              <Input type="text" defaultValue={userZoneCode} placeholder="우편번호" required className="h-12" />
+          <div className="flex w-full flex-col gap-2">
+            <div className="flex w-full items-center gap-3">
+              <Input type="text" defaultValue={shippingInfo.zoneCode} placeholder="우편번호" required className="h-12" />
               <Button type="submit" onClick={handleGetAddress} className="h-12">
                 우편번호 검색
               </Button>
             </div>
-            <div className="flex items-center w-full gap-3">
-              <Input type="text" defaultValue={userFullAddress} placeholder="주소" required className="h-12" />
-              <Input type="text" defaultValue={userExtraAddress} placeholder="참고항목" className="h-12" />
+            <div className="flex w-full items-center gap-3">
+              <Input type="text" defaultValue={shippingInfo.fullAddress} placeholder="주소" required className="h-12" />
+              <Input type="text" defaultValue={shippingInfo.extraAddress} placeholder="참고항목" className="h-12" />
             </div>
             <Input
               type="text"
@@ -64,9 +68,9 @@ const Shipping = () => {
             />
           </div>
         </div>
-        <div className="flex flex-row gap-6 container items-center">
+        <div className="container flex flex-row items-center gap-6">
           <p className="w-32">배송 메시지</p>
-          <div className="flex items-center w-full">
+          <div className="flex w-full items-center">
             <Input placeholder="ex) 배송 전 연락주세요." className="h-12" />
           </div>
         </div>
