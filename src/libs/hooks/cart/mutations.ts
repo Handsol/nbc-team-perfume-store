@@ -14,11 +14,11 @@ export const useAddCartItem = () => {
 
   return useMutation({
     mutationFn: addCartItem,
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['cart']
       });
+      alert('장바구니에 추가되었습니다!');
     }
   });
 };
