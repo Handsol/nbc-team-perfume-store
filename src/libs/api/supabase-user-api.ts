@@ -24,7 +24,7 @@ const mapSupabaseUserToUser = (supabaseUser: SupabaseUser): User => {
 
   return {
     id: supabaseUser.id,
-    nickname: supabaseUser.user_metadata?.nickname || '',
+    nickname: supabaseUser.user_metadata?.user_nickname || '',
     email,
     created_at: supabaseUser.created_at
   };
