@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { getCurrentUser } from '@/libs/api/supabase-user-api';
 import { useAuthStore } from '@/zustand/authStore';
 
-export default function AuthCallback() {
+const AuthCallbackPage = () => {
   const router = useRouter();
   const { setLogin } = useAuthStore();
 
@@ -24,4 +24,6 @@ export default function AuthCallback() {
   }, [router, setLogin]);
 
   return <div>처리 중...</div>;
-}
+};
+
+export default AuthCallbackPage;
