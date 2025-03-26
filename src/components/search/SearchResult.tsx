@@ -29,7 +29,7 @@ const SearchResults = () => {
 
   return (
     <Suspense>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container flex flex-col items-center mx-auto px-4 py-8">
         <h1 className="text-xl font-bold">
           입력하신 <span className="text-blue-500">{query}</span> 에 대한 검색 결과입니다.
         </h1>
