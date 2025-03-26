@@ -14,6 +14,12 @@ const Search = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-row  h-[50px] border-b border-black">
@@ -22,6 +28,7 @@ const Search = () => {
           placeholder="오롯이 당신만의 향을 찾아보세요!"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <button onClick={handleSearch}>
           <Image src={'/search-button.png'} alt="search" width={30} height={0} />
