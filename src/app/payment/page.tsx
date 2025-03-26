@@ -10,18 +10,6 @@ import Link from 'next/link';
 
 const PaymentPage = () => {
   const selectedItems = useCartStore((state) => state.selectedItems);
-  // const [userState, setUserState] = useState<TPayStore['orderUser']>({
-  //   nickname: '',
-  //   email: '',
-  //   phone: 0
-  // });
-  // const [shippingState, setShippingState] = useState<TPayStore['orderShipping']>({
-  //   address: '',
-  //   message: ''
-  // });
-  // const [payState, setPayState] = useState<TPayStore['orderPay']>({
-  //   payMethod: ''
-  // });
 
   return (
     <div className="container mx-auto my-10 flex flex-col gap-2">
