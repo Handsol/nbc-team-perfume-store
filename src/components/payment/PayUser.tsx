@@ -1,9 +1,9 @@
 'use client';
 
-import { useAuthStore } from '@/zustand/authStore';
-import { Input } from '../ui/input';
 import { ChangeEvent, useState } from 'react';
+import { useAuthStore } from '@/zustand/authStore';
 import { AuthState } from '@/types/auth';
+import { Input } from '../ui/input';
 
 const PayUser = () => {
   const user = useAuthStore<AuthState['user']>((state) => state.user);
@@ -23,7 +23,7 @@ const PayUser = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto p-4">
       <h2 className="mb-4 text-xl">주문자 정보</h2>
       <div className="flex flex-col justify-start gap-2 px-8 py-6">
         <div className="container flex flex-row items-center gap-6">
@@ -56,14 +56,7 @@ const PayUser = () => {
         <div className="container flex flex-row items-center gap-6">
           <p className="w-32">연락처</p>
           <div className="flex w-full items-center">
-            <Input
-              type="tel"
-              placeholder="연락처"
-              required
-              className="h-12"
-              name="phone"
-              onChange={handleUserInput}
-            />
+            <Input type="tel" placeholder="연락처" required className="h-12" name="phone" onChange={handleUserInput} />
           </div>
         </div>
       </div>

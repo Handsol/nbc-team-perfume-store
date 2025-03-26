@@ -24,11 +24,11 @@ const Header = () => {
   }
 
   return (
-    <header className="flex flex-col items-center w-full border-b border-lightgray">
-      <div className="flex flex-row w-full max-w-[1400px] h-[100px] justify-between items-center px-4">
+    <header className="flex w-full flex-col items-center border-b border-lightgray">
+      <div className="flex h-[100px] w-full max-w-[1400px] flex-row items-center justify-between px-4">
         {/* 로고 */}
         <Link href={'/'}>
-          <Image src={'/orot-logo.png'} alt="orot logo" width={150} height={0} style={{ height: 'auto' }} />
+          <Image src={'/orot-logo.png'} alt="orot logo" width={150} height={0} style={{ height: 'auto' }} priority />
         </Link>
 
         {/* 검색창 */}

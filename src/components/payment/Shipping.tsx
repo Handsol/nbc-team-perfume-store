@@ -1,7 +1,9 @@
 'use client';
-import { TAddress } from '@/types/shipping';
+
 import { useState } from 'react';
+
 import { useDaumPostcodePopup } from 'react-daum-postcode';
+import { TAddress } from '@/types/shipping';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 
@@ -42,14 +44,20 @@ const Shipping = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto p-4">
       <h2 className="mb-4 text-xl">배송 정보</h2>
       <div className="flex flex-col justify-start gap-6 px-8 py-6">
         <div className="container flex flex-row gap-6">
           <p className="w-32"> 받는 분</p>
           <div className="flex w-full flex-col gap-2">
             <div className="flex w-full items-center gap-3">
-              <Input type="text" defaultValue={shippingInfo.zoneCode} placeholder="우편번호" required className="h-12" />
+              <Input
+                type="text"
+                defaultValue={shippingInfo.zoneCode}
+                placeholder="우편번호"
+                required
+                className="h-12"
+              />
               <Button type="submit" onClick={handleGetAddress} className="h-12">
                 우편번호 검색
               </Button>
