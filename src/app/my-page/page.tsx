@@ -4,6 +4,10 @@ import { useMyPage } from '@/libs/hooks/useMyPage';
 
 export default function MyPage() {
   const {
+    activeTab,
+    setActiveTab,
+    provider,
+    email,
     nickname,
     handleNicknameChange,
     handleUpdateNickname,

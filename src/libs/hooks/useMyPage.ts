@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser, updateNickname, updatePassword } from '@/libs/api/supabase-user-api';
 import { useAuthStore } from '@/zustand/authStore';
+import { SIGNUP_ERROR_MESSAGES } from '@/constants/errorMessages/signupErrorMessages';
 
 interface UpdateErrors {
   nickname: string | null;
@@ -47,16 +48,10 @@ export const useMyPage = () => {
     loadUser();
   }, [router, setLogin]);
 
-  // 닉네임 변경 핸들러
   const handleNicknameChange = (value: string) => {
     setNickname(value);
-    if (!value) {
-      setErrors((prev) => ({ ...prev, nickname: '닉네임은 필수 입력 항목입니다.' }));
-    } else if (value.length < 2 || value.length > 12) {
-      setErrors((prev) => ({ ...prev, nickname: '닉네임은 2~12자 사이여야 합니다.' }));
-    } else {
-      setErrors((prev) => ({ ...prev, nickname: null }));
-    }
+    const validationError = validateNickname(value);
+    setErrors((prev) => ({ ...prev, nickname: validationError }));
   };
 
   // 닉네임 업데이트
@@ -83,7 +78,6 @@ export const useMyPage = () => {
       }
   };
 
-  // 비밀번호 입력 핸들러
   const handleCurrentPasswordChange = (value: string) => {
     setCurrentPassword(value);
     if (provider === 'email' && !value) {
@@ -95,13 +89,8 @@ export const useMyPage = () => {
 
   const handleNewPasswordChange = (value: string) => {
     setNewPassword(value);
-    if (!value) {
-      setErrors((prev) => ({ ...prev, newPassword: '새 비밀번호를 입력해주세요.' }));
-    } else if (value.length < 6) {
-      setErrors((prev) => ({ ...prev, newPassword: '비밀번호는 최소 6자 이상이어야 합니다.' }));
-    } else {
-      setErrors((prev) => ({ ...prev, newPassword: null }));
-    }
+    const validationError = validatePassword(value);
+    setErrors((prev) => ({ ...prev, newPassword: validationError }));
 
     if (confirmNewPassword && value !== confirmNewPassword) {
       setErrors((prev) => ({ ...prev, confirmNewPassword: '비밀번호가 일치하지 않습니다.' }));
@@ -140,6 +129,37 @@ export const useMyPage = () => {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmNewPassword('');
+  };
+
+  // 비밀번호 유효성 검사
+  const validatePassword = (value: string): string | null => {
+    if (!value) {
+      return SIGNUP_ERROR_MESSAGES.password.required;
+    }
+    if (value.length < 8) {
+      return SIGNUP_ERROR_MESSAGES.password.length;
+    }
+    if (!/[a-zA-Z]/.test(value) || !/\d/.test(value) || !/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+      return SIGNUP_ERROR_MESSAGES.password.combination;
+    }
+    if (/(.)\1{3,}/.test(value)) {
+      return SIGNUP_ERROR_MESSAGES.password.consecutive;
+    }
+    return null;
+  };
+
+  // 닉네임 유효성 검사
+  const validateNickname = (value: string): string | null => {
+    if (!value) {
+      return SIGNUP_ERROR_MESSAGES.nickname.required;
+    }
+    if (value.length < 2 || value.length > 12) {
+      return SIGNUP_ERROR_MESSAGES.nickname.length;
+    }
+    if (!/^[a-zA-Z0-9가-힣]+$/.test(value)) {
+      return SIGNUP_ERROR_MESSAGES.nickname.specialChars;
+    }
+    return null;
   };
 
   const goToMyPage = () => {
