@@ -89,6 +89,15 @@ export const useSignup = () => {
       }
     }
 
+    // 비밀번호 확인 검사
+    if (!confirmPassword) {
+      newErrors.confirmPassword = SIGNUP_ERROR_MESSAGES.passwordConfirm.required;
+      isValid = false;
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = SIGNUP_ERROR_MESSAGES.passwordConfirm.diffrent;
+      isValid = false;
+    }
+
     // 닉네임 검사
     if (!nickname) {
       newErrors.nickname = SIGNUP_ERROR_MESSAGES.nickname.required;
@@ -180,12 +189,13 @@ export const useSignup = () => {
     const { user, session, error } = await signup({ email, password, nickname });
 
     if (error) {
-      setErrors((prev) => ({ ...prev, email: error }));
+      console.error(`회원가입 실패: ${error}`);
     } else if (user && session) {
       setLogin(user, session.access_token);
       alert('회원가입 성공! 이메일을 확인해주세요.');
       setEmail('');
       setPassword('');
+      setConfirmPassword('');
       setNickname('');
       setPasswordValidation({
         length: false,
