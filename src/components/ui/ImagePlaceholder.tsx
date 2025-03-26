@@ -28,7 +28,8 @@ const ImagePlaceholder = ({
       height={fill ? undefined : height}
       fill={fill}
       className={className}
-      placeholder="empty"
+      placeholder="blur"
+      blurDataURL={src}
     />
   );
 };
