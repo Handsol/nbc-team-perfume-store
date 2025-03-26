@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signInWithGoogle, signInWithKakao, signup } from '@/libs/api/supabase-user-api';
 import { Errors, PasswordValidation } from '@/types/signup-validation';
-import { SIGNUP_ERROR_MESSAGES } from '@/constants/errorMessages/signupErrorMessages';
+import { ACCOUNT_ERROR_MESSAGES } from '@/constants/errorMessages/accountErrorMessages';
 import { LOGIN_ERROR_MESSAGES } from '@/constants/errorMessages/loginErrorMessages';
 import { getPasswordStrength, isAlphaNumericOnly, isValidEmail, validatePassword } from '@/utils/validation';
 
@@ -61,50 +61,50 @@ export const useSignup = () => {
 
     // 이메일 검사
     if (!email) {
-      newErrors.email = SIGNUP_ERROR_MESSAGES.email.required;
+      newErrors.email = ACCOUNT_ERROR_MESSAGES.email.required;
       isValid = false;
     } else if (!isValidEmail(email)) {
-      newErrors.email = SIGNUP_ERROR_MESSAGES.email.invalid;
+      newErrors.email = ACCOUNT_ERROR_MESSAGES.email.invalid;
       isValid = false;
     }
 
     // 비밀번호 검사
     if (!password) {
-      newErrors.password = SIGNUP_ERROR_MESSAGES.password.required;
+      newErrors.password = ACCOUNT_ERROR_MESSAGES.password.required;
       isValid = false;
     } else {
       const validation = validatePassword(password, email);
       setPasswordValidation(validation);
       if (!validation.length) {
-        newErrors.password = SIGNUP_ERROR_MESSAGES.password.length;
+        newErrors.password = ACCOUNT_ERROR_MESSAGES.password.length;
         isValid = false;
       } else if (!validation.combination) {
-        newErrors.password = SIGNUP_ERROR_MESSAGES.password.combination;
+        newErrors.password = ACCOUNT_ERROR_MESSAGES.password.combination;
         isValid = false;
       } else if (validation.consecutive) {
-        newErrors.password = SIGNUP_ERROR_MESSAGES.password.consecutive;
+        newErrors.password = ACCOUNT_ERROR_MESSAGES.password.consecutive;
         isValid = false;
       }
     }
 
     // 비밀번호 확인 검사
     if (!confirmPassword) {
-      newErrors.confirmPassword = SIGNUP_ERROR_MESSAGES.passwordConfirm.required;
+      newErrors.confirmPassword = ACCOUNT_ERROR_MESSAGES.passwordConfirm.required;
       isValid = false;
     } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = SIGNUP_ERROR_MESSAGES.passwordConfirm.diffrent;
+      newErrors.confirmPassword = ACCOUNT_ERROR_MESSAGES.passwordConfirm.diffrent;
       isValid = false;
     }
 
     // 닉네임 검사
     if (!nickname) {
-      newErrors.nickname = SIGNUP_ERROR_MESSAGES.nickname.required;
+      newErrors.nickname = ACCOUNT_ERROR_MESSAGES.nickname.required;
       isValid = false;
     } else if (nickname.length < 2 || nickname.length > 12) {
-      newErrors.nickname = SIGNUP_ERROR_MESSAGES.nickname.length;
+      newErrors.nickname = ACCOUNT_ERROR_MESSAGES.nickname.length;
       isValid = false;
     } else if (!isAlphaNumericOnly(nickname)) {
-      newErrors.nickname = SIGNUP_ERROR_MESSAGES.nickname.specialChars;
+      newErrors.nickname = ACCOUNT_ERROR_MESSAGES.nickname.specialChars;
       isValid = false;
     }
 
@@ -116,9 +116,9 @@ export const useSignup = () => {
   const handleEmailChange = (value: string) => {
     setEmail(value);
     if (!value) {
-      setErrors((prev) => ({ ...prev, email: SIGNUP_ERROR_MESSAGES.email.required }));
+      setErrors((prev) => ({ ...prev, email: ACCOUNT_ERROR_MESSAGES.email.required }));
     } else if (!isValidEmail(value)) {
-      setErrors((prev) => ({ ...prev, email: SIGNUP_ERROR_MESSAGES.email.invalid }));
+      setErrors((prev) => ({ ...prev, email: ACCOUNT_ERROR_MESSAGES.email.invalid }));
     } else {
       setErrors((prev) => ({ ...prev, email: null }));
     }
@@ -130,13 +130,13 @@ export const useSignup = () => {
     setPasswordValidation(validatePassword(value, email));
 
     if (!value) {
-      setErrors((prev) => ({ ...prev, password: SIGNUP_ERROR_MESSAGES.password.required }));
+      setErrors((prev) => ({ ...prev, password: ACCOUNT_ERROR_MESSAGES.password.required }));
     } else {
       const validation = validatePassword(value, email);
       if (!validation.length) {
-        setErrors((prev) => ({ ...prev, password: SIGNUP_ERROR_MESSAGES.password.length }));
+        setErrors((prev) => ({ ...prev, password: ACCOUNT_ERROR_MESSAGES.password.length }));
       } else if (!validation.combination) {
-        setErrors((prev) => ({ ...prev, password: SIGNUP_ERROR_MESSAGES.password.combination }));
+        setErrors((prev) => ({ ...prev, password: ACCOUNT_ERROR_MESSAGES.password.combination }));
       } else {
         setErrors((prev) => ({ ...prev, password: null }));
       }
@@ -144,7 +144,7 @@ export const useSignup = () => {
 
     // 비밀번호가 변경될 때 비밀번호 확인 필드도 재검사
     if (confirmPassword && value !== confirmPassword) {
-      setErrors((prev) => ({ ...prev, confirmPassword: SIGNUP_ERROR_MESSAGES.passwordConfirm.diffrent }));
+      setErrors((prev) => ({ ...prev, confirmPassword: ACCOUNT_ERROR_MESSAGES.passwordConfirm.diffrent }));
     } else {
       setErrors((prev) => ({ ...prev, confirmPassword: null }));
     }
@@ -154,9 +154,9 @@ export const useSignup = () => {
   const handleConfirmPasswordChange = (value: string) => {
     setConfirmPassword(value);
     if (!value) {
-      setErrors((prev) => ({ ...prev, confirmPassword: SIGNUP_ERROR_MESSAGES.passwordConfirm.required }));
+      setErrors((prev) => ({ ...prev, confirmPassword: ACCOUNT_ERROR_MESSAGES.passwordConfirm.required }));
     } else if (value !== password) {
-      setErrors((prev) => ({ ...prev, confirmPassword: SIGNUP_ERROR_MESSAGES.passwordConfirm.diffrent }));
+      setErrors((prev) => ({ ...prev, confirmPassword: ACCOUNT_ERROR_MESSAGES.passwordConfirm.diffrent }));
     } else {
       setErrors((prev) => ({ ...prev, confirmPassword: null }));
     }
@@ -166,11 +166,11 @@ export const useSignup = () => {
   const handleNicknameChange = (value: string) => {
     setNickname(value);
     if (!value) {
-      setErrors((prev) => ({ ...prev, nickname: SIGNUP_ERROR_MESSAGES.nickname.required }));
+      setErrors((prev) => ({ ...prev, nickname: ACCOUNT_ERROR_MESSAGES.nickname.required }));
     } else if (value.length < 2 || value.length > 12) {
-      setErrors((prev) => ({ ...prev, nickname: SIGNUP_ERROR_MESSAGES.nickname.length }));
+      setErrors((prev) => ({ ...prev, nickname: ACCOUNT_ERROR_MESSAGES.nickname.length }));
     } else if (!isAlphaNumericOnly(value)) {
-      setErrors((prev) => ({ ...prev, nickname: SIGNUP_ERROR_MESSAGES.nickname.specialChars }));
+      setErrors((prev) => ({ ...prev, nickname: ACCOUNT_ERROR_MESSAGES.nickname.specialChars }));
     } else {
       setErrors((prev) => ({ ...prev, nickname: null }));
     }

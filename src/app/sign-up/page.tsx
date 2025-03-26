@@ -1,7 +1,7 @@
 'use client';
 
 import { CheckCircle, XCircle } from 'lucide-react';
-import { SIGNUP_ERROR_MESSAGES } from '@/constants/errorMessages/signupErrorMessages';
+import { ACCOUNT_ERROR_MESSAGES } from '@/constants/errorMessages/accountErrorMessages';
 import { useSignup } from '@/libs/hooks/useSignup';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -27,9 +27,9 @@ export default function SignupPage() {
   } = useSignup();
 
   const passwordConditions = [
-    { key: 'length', message: SIGNUP_ERROR_MESSAGES.password.length },
-    { key: 'combination', message: SIGNUP_ERROR_MESSAGES.password.combination },
-    { key: 'consecutive', message: SIGNUP_ERROR_MESSAGES.password.consecutive }
+    { key: 'length', message: ACCOUNT_ERROR_MESSAGES.password.length },
+    { key: 'combination', message: ACCOUNT_ERROR_MESSAGES.password.combination },
+    { key: 'consecutive', message: ACCOUNT_ERROR_MESSAGES.password.consecutive }
   ];
 
   const getConditionStyle = (isValid: boolean) => ({
@@ -77,7 +77,7 @@ export default function SignupPage() {
           disabled={loading}
           className={`w-full p-3 transition-all duration-200 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
         />
-        {errors.password === SIGNUP_ERROR_MESSAGES.password.required && (
+        {errors.password === ACCOUNT_ERROR_MESSAGES.password.required && (
           <p className="mt-2 text-sm text-red-500">{errors.password}</p>
         )}
         {password && (
@@ -139,8 +139,8 @@ export default function SignupPage() {
       {(capsLockOn || numLockOn) && (
         <div className="mb-5 rounded-md bg-yellow-50 p-3">
           <div className="text-sm text-yellow-600">
-            {capsLockOn && <p className="flex items-center">⚠️ {SIGNUP_ERROR_MESSAGES.keyboard.capsLock}</p>}
-            {numLockOn && <p className="flex items-center">⚠️ {SIGNUP_ERROR_MESSAGES.keyboard.numLock}</p>}
+            {capsLockOn && <p className="flex items-center">⚠️ {ACCOUNT_ERROR_MESSAGES.keyboard.capsLock}</p>}
+            {numLockOn && <p className="flex items-center">⚠️ {ACCOUNT_ERROR_MESSAGES.keyboard.numLock}</p>}
           </div>
         </div>
       )}

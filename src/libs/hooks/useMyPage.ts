@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser, updateNickname, updatePassword } from '@/libs/api/supabase-user-api';
 import { useAuthStore } from '@/zustand/authStore';
-import { SIGNUP_ERROR_MESSAGES } from '@/constants/errorMessages/signupErrorMessages';
+import { ACCOUNT_ERROR_MESSAGES } from '@/constants/errorMessages/accountErrorMessages';
 
 interface UpdateErrors {
   nickname: string | null;
@@ -162,16 +162,16 @@ export const useMyPage = () => {
   // 비밀번호 유효성 검사
   const validatePassword = (value: string): string | null => {
     if (!value) {
-      return SIGNUP_ERROR_MESSAGES.password.required;
+      return ACCOUNT_ERROR_MESSAGES.password.required;
     }
     if (value.length < 8) {
-      return SIGNUP_ERROR_MESSAGES.password.length;
+      return ACCOUNT_ERROR_MESSAGES.password.length;
     }
     if (!/[a-zA-Z]/.test(value) || !/\d/.test(value) || !/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
-      return SIGNUP_ERROR_MESSAGES.password.combination;
+      return ACCOUNT_ERROR_MESSAGES.password.combination;
     }
     if (/(.)\1{3,}/.test(value)) {
-      return SIGNUP_ERROR_MESSAGES.password.consecutive;
+      return ACCOUNT_ERROR_MESSAGES.password.consecutive;
     }
     return null;
   };
@@ -179,13 +179,13 @@ export const useMyPage = () => {
   // 닉네임 유효성 검사
   const validateNickname = (value: string): string | null => {
     if (!value) {
-      return SIGNUP_ERROR_MESSAGES.nickname.required;
+      return ACCOUNT_ERROR_MESSAGES.nickname.required;
     }
     if (value.length < 2 || value.length > 12) {
-      return SIGNUP_ERROR_MESSAGES.nickname.length;
+      return ACCOUNT_ERROR_MESSAGES.nickname.length;
     }
     if (!/^[a-zA-Z0-9가-힣]+$/.test(value)) {
-      return SIGNUP_ERROR_MESSAGES.nickname.specialChars;
+      return ACCOUNT_ERROR_MESSAGES.nickname.specialChars;
     }
     return null;
   };
