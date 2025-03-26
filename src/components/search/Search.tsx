@@ -64,16 +64,22 @@ const Search = () => {
       {showDropdown && recentSearches.length > 0 && (
         <ul className="border-gray-300 absolute top-full z-50 mt-1 w-full overflow-hidden rounded-md border bg-white shadow-lg">
           {recentSearches.map((search, index) => (
-            <li key={index} className="hover:bg-gray-100 flex cursor-pointer items-center justify-between px-4 py-2">
-              <span
-                onClick={() => {
-                  setQuery(search);
-                  handleSearch(search);
+            <li
+              key={index}
+              className="hover:bg-gray-100 flex cursor-pointer items-center justify-between px-4 py-2"
+              onClick={() => {
+                setQuery(search);
+                handleSearch(search);
+              }}
+            >
+              <span>{search}</span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); // 삭제 버튼 클릭 시 검색 실행 방지
+                  removeSearchItem(search);
                 }}
+                className="text-gray-500 text-sm hover:text-red-500"
               >
-                {search}
-              </span>
-              <button onClick={() => removeSearchItem(search)} className="text-gray-500 text-sm hover:text-red-500">
                 ✕
               </button>
             </li>
