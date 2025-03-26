@@ -12,7 +12,13 @@ export const useSignup = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [nickname, setNickname] = useState('');
-  const [errors, setErrors] = useState<Errors>({ email: null, password: null, confirmPassword: null, nickname: null });
+  const [errors, setErrors] = useState<Errors>({
+    email: null,
+    password: null,
+    confirmPassword: null,
+    nickname: null,
+    social: null
+  });
   const [passwordValidation, setPasswordValidation] = useState<PasswordValidation>({
     length: false,
     alphabet: false,
@@ -51,7 +57,7 @@ export const useSignup = () => {
 
   // 전체 폼 유효성 검사
   const validateForm = (): boolean => {
-    const newErrors: Errors = { email: null, password: null, confirmPassword: null, nickname: null };
+    const newErrors: Errors = { email: null, password: null, confirmPassword: null, nickname: null, social: null };
     let isValid = true;
 
     // 이메일 검사
@@ -168,7 +174,7 @@ export const useSignup = () => {
     }
 
     setLoading(true);
-    setErrors({ email: null, password: null, confirmPassword: null, nickname: null });
+    setErrors({ email: null, password: null, confirmPassword: null, nickname: null, social: null });
 
     const { user, session, error } = await signup({ email, password, nickname });
 
