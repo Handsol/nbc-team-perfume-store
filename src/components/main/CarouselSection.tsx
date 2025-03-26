@@ -1,10 +1,10 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { getProducts } from '@/libs/api/product/product-api';
+import { getAllProducts } from '@/libs/api/product/product-api';
 import ImagePlaceholder from '../ui/ImagePlaceholder';
 
 const CarouselSection = async () => {
   // 최신 등록순으로 제품 5개의 정보만 가져오기
-  const allProducts = await getProducts();
+  const allProducts = await getAllProducts();
   const products = allProducts
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
     .slice(0, 5);
