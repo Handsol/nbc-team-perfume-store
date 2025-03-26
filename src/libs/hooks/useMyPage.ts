@@ -27,6 +27,7 @@ export const useMyPage = () => {
   });
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [provider, setProvider] = useState<string>('email');
 
   // 사용자 정보 로드
   useEffect(() => {
