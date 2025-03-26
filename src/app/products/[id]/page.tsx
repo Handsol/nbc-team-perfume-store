@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { getProductDetails } from '@/libs/api/product/product-api';
 import ProductDetail from '@/components/product/ProductDetail';
-import { Button } from '@/components/ui/button';
 import ReviewForm from '@/components/product/ReviewForm';
 import ReviewList from '@/components/product/ReviewList';
+import ProductSelector from '@/components/product/ProductSelector';
 
 const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
   const details = await getProductDetails(params.id);
@@ -44,38 +44,7 @@ const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
                 배송기간: <span className="font-medium">1~2일 (영업일 기준)</span>
               </p>
             </div>
-
-            {/* 옵션 선택 */}
-            <div className="mt-4">
-              <p className="font-medium text-sm uppercase text-gray-700">옵션</p>
-              <select className="w-full border border-gray-300 rounded-md p-2 mt-1 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400">
-                <option>100ml</option>
-              </select>
-            </div>
-
-            {/* 수량 선택 */}
-            <div className="flex items-center mt-4">
-              <p className="font-medium mr-4 text-sm uppercase text-gray-700">수량</p>
-              <Button className="border border-gray-300 px-3 py-1 text-lg text-gray-700 hover:bg-gray-100">-</Button>
-              <span className="mx-4 text-lg font-semibold text-gray-900">1</span>
-              <Button className="border border-gray-300 px-3 py-1 text-lg text-gray-700 hover:bg-gray-100">+</Button>
-            </div>
-
-            {/* 총 가격 */}
-            <div className="mt-4">
-              <p className="font-medium text-sm uppercase text-gray-700">판매가</p>
-              <p className="text-xl font-semibold text-gray-900 mt-1">{details.product_price.toLocaleString()} 원</p>
-            </div>
-          </div>
-
-          {/* 버튼 */}
-          <div className="mt-6 flex flex-col gap-3">
-            <Button className="w-full bg-black text-white py-3 rounded-md uppercase tracking-wider font-medium hover:bg-gray-800 transition">
-              장바구니
-            </Button>
-            <Button className="w-full bg-black text-white py-3 rounded-md uppercase tracking-wider font-medium hover:bg-gray-800 transition">
-              바로 구매
-            </Button>
+            <ProductSelector product_price={details.product_price} product_id={details.product_id} />
           </div>
         </div>
       </div>
