@@ -4,7 +4,8 @@ import { TCartItem } from '@/types/cart-items';
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 import useCartStore from '@/zustand/cart-store';
-import { useCallback, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { calculateTotal } from '@/utils/purchase';
 
 type Props = {
   cartItemList: TCartItem[];
@@ -15,28 +16,15 @@ const CartPriceWrapper = ({ cartItemList }: Props) => {
   const [total, setTotal] = useState(0);
   const [shippingPay, setShippingPay] = useState(0);
   // checkedList를 따로 useState로 관리하지 않음
-  const calculateTotal = useCallback(() => {
-    const tempCheckedList = cartItemList.filter((cart) => cart.cart_checked);
-
-    let tempTotal = tempCheckedList.reduce((cur, item) => {
-      return cur + item.products.product_price * item.cart_quantity;
-    }, 0);
-
-    setShippingPay(tempTotal === 0 ? 0 : tempTotal > 50000 ? 0: 3000);// 배송비
-    // console.log(shippingPay) 
-    if (tempTotal < 50000) {
-      tempTotal += shippingPay;
-    }
-
-    setTotal(tempTotal);
-    return { tempCheckedList, tempTotal };
-  }, [cartItemList]);
 
   useEffect(() => {
-    const { tempCheckedList, tempTotal } = calculateTotal();
-    cartStatus.setSeletedItems(tempCheckedList); // 체크된 제품 상태 저장
-    cartStatus.setSeletedTotal(tempTotal); // 총 금액 상태 저장
-  }, [cartItemList, calculateTotal]);
+    const { total, shippingPay, checkedList } = calculateTotal(cartItemList);
+    console.log(total, checkedList);
+    setTotal(total);
+    setShippingPay(shippingPay);
+    cartStatus.setSelectedItems(checkedList);
+    cartStatus.setSelectedTotal(total); // 총 금액 상태 저장
+  }, [cartItemList]);
 
   return (
     <div className="w-full min-w-[360px] grow bg-black p-2 xl:w-80">

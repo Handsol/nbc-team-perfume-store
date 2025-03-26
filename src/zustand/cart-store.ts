@@ -9,13 +9,13 @@ const initialState = {
 type TCartStore = {
   selectedItems: TCartItem[];
   selectedTotal: number;
-  setSeletedItems: (cartItemList: TCartItem[]) => void;
-  setSeletedTotal: (total: number) => void;
+  setSelectedItems: (cartItemList: TCartItem[]) => void;
+  setSelectedTotal: (total: number) => void;
 };
 const useCartStore = create<TCartStore>()((set) => ({
   ...initialState,
-  setSeletedItems: (cartItemList) => set({ selectedItems: cartItemList }),
-  setSeletedTotal: (total) => set({ selectedTotal: total })
+  setSelectedItems: (cartItemList) => set({ selectedItems: cartItemList }),
+  setSelectedTotal: (total) => set({ selectedTotal: total })
 }));
 
 export default useCartStore;
