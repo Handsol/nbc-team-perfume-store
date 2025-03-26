@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { signInWithGoogle, signInWithKakao, signup } from '@/libs/api/supabase-user-api';
-import { useAuthStore } from '@/zustand/authStore';
 import { Errors, PasswordValidation } from '@/types/signup-validation';
 import { SIGNUP_ERROR_MESSAGES } from '@/constants/errorMessages/signupErrorMessages';
 import { getPasswordStrength, isAlphaNumericOnly, isValidEmail, validatePassword } from '@/utils/validation';
@@ -36,7 +35,6 @@ export const useSignup = () => {
   const [numLockOn, setNumLockOn] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { setLogin } = useAuthStore();
   const router = useRouter();
 
   // Caps Lock 및 Num Lock 감지
