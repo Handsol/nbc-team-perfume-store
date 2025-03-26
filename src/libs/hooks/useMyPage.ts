@@ -50,7 +50,7 @@ export const useMyPage = () => {
 
   // 2.5초 후 메세지 창 닫히도록 기능 구현
   useEffect(() => {
-    if (successMessage || errors.nickname || errors.currentPassword || errors.newPassword || errors.confirmNewPassword) {
+    if (successMessage) {
       const timer = setTimeout(() => {
         setSuccessMessage(null);
         setErrors({

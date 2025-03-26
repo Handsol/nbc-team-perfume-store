@@ -65,14 +65,6 @@ export default function MyPage() {
         {activeTab === 'profile' && (
           <div className="max-w-md">
             <h1 className="text-xl font-semibold mb-6">개인정보변경</h1>
-            {successMessage && (
-              <div
-                role="alert"
-                className="mb-4 p-3 bg-green-100 text-green-700 rounded animate-fade-in"
-              >
-                {successMessage}
-              </div>
-            )}
             <div className="mb-4">
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 이메일
@@ -106,6 +98,18 @@ export default function MyPage() {
                 </p>
               )}
             </div>
+            <div className="min-h-[60px] mb-4">
+              {successMessage ? (
+                <div
+                  role="alert"
+                  className="p-3 bg-green-100 text-green-700 rounded-lg shadow-md animate-fade-in"
+                >
+                  {successMessage}
+                </div>
+              ) : (
+                <div className="h-[48px]"></div>
+              )}
+            </div>
             <div className="flex justify-start">
               <Button
                 onClick={handleUpdateNickname}
@@ -120,14 +124,6 @@ export default function MyPage() {
         {activeTab === 'password' && provider === 'email' && (
           <div className="max-w-md">
             <h1 className="text-xl font-semibold mb-6">비밀번호 변경</h1>
-            {successMessage && (
-              <div
-                role="alert"
-                className="mb-4 p-3 bg-green-100 text-green-700 rounded animate-fade-in"
-              >
-                {successMessage}
-              </div>
-            )}
             <div className="mb-4">
               <label
                 htmlFor="currentPassword"
@@ -197,6 +193,18 @@ export default function MyPage() {
                 <p id="confirmNewPassword-error" className="mt-1 text-sm text-red-600">
                   {errors.confirmNewPassword}
                 </p>
+              )}
+            </div>
+            <div className="min-h-[60px] mb-4">
+              {successMessage ? (
+                <div
+                  role="alert"
+                  className="p-3 bg-green-100 text-green-700 rounded-lg shadow-md animate-fade-in"
+                >
+                  {successMessage}
+                </div>
+              ): (
+                <div className="h-[48px]"></div>
               )}
             </div>
             <div className="flex justify-start">
