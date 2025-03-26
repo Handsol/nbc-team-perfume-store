@@ -1,5 +1,7 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useMyPage } from '@/libs/hooks/useMyPage';
 
 export default function MyPage() {
@@ -26,6 +28,7 @@ export default function MyPage() {
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* 사이드바 */}
+      {/* 스타일 이슈로 Button 태그 대신 html button 태그 사용 */}
       <div className="w-64 bg-gray-200 p-6">
         <h2 className="text-lg font-semibold mb-6">내정보관리</h2>
         <ul>
@@ -58,10 +61,9 @@ export default function MyPage() {
         </ul>
       </div>
 
-      {/* 메인 컨텐츠 */}
       <div className="flex-1 p-6">
         {activeTab === 'profile' && (
-          <div>
+          <div className="max-w-md">
             <h1 className="text-xl font-semibold mb-6">개인정보변경</h1>
             {successMessage && (
               <div
@@ -75,7 +77,7 @@ export default function MyPage() {
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 이메일
               </label>
-              <input
+              <Input
                 type="email"
                 id="email"
                 value={email}
@@ -87,7 +89,7 @@ export default function MyPage() {
               <label htmlFor="nickname" className="block text-sm font-medium text-gray-700">
                 닉네임
               </label>
-              <input
+              <Input
                 type="text"
                 id="nickname"
                 value={nickname}
@@ -104,20 +106,19 @@ export default function MyPage() {
                 </p>
               )}
             </div>
-            <button
-              onClick={handleUpdateNickname}
-              disabled={loading}
-              className={`w-full py-2 px-4 rounded-md text-white font-medium transition-colors ${
-                loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-              }`}
-            >
-              {loading ? '처리 중...' : '저장'}
-            </button>
+            <div className="flex justify-start">
+              <Button
+                onClick={handleUpdateNickname}
+                disabled={loading}
+              >
+                {loading ? '처리 중...' : '저장'}
+              </Button>
+            </div>
           </div>
         )}
 
         {activeTab === 'password' && provider === 'email' && (
-          <div>
+          <div className="max-w-md">
             <h1 className="text-xl font-semibold mb-6">비밀번호 변경</h1>
             {successMessage && (
               <div
@@ -134,7 +135,7 @@ export default function MyPage() {
               >
                 현재 비밀번호
               </label>
-              <input
+              <Input
                 type="password"
                 id="currentPassword"
                 value={currentPassword}
@@ -155,7 +156,7 @@ export default function MyPage() {
               <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
                 새 비밀번호
               </label>
-              <input
+              <Input
                 type="password"
                 id="newPassword"
                 value={newPassword}
@@ -179,7 +180,7 @@ export default function MyPage() {
               >
                 새 비밀번호 확인
               </label>
-              <input
+              <Input
                 type="password"
                 id="confirmNewPassword"
                 value={confirmNewPassword}
@@ -198,15 +199,14 @@ export default function MyPage() {
                 </p>
               )}
             </div>
-            <button
-              onClick={handleUpdatePassword}
-              disabled={loading}
-              className={`w-full py-2 px-4 rounded-md text-white font-medium transition-colors ${
-                loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-              }`}
-            >
-              {loading ? '처리 중...' : '저장'}
-            </button>
+            <div className="flex justify-start">
+              <Button
+                onClick={handleUpdatePassword}
+                disabled={loading}
+              >
+                {loading ? '처리 중...' : '저장'}
+              </Button>
+            </div>
           </div>
         )}
       </div>
