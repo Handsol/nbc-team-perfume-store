@@ -19,12 +19,13 @@ const Search = () => {
   }, []);
 
   // 검색 실행 및 최근 검색어 저장
-  const handleSearch = () => {
-    if (query.trim() !== '') {
-      const updatedSearches = [query, ...recentSearches.filter((item) => item !== query)].slice(0, 5); // 최대 5개 유지
+  const handleSearch = (searchQuery?: string) => {
+    const searchValue = searchQuery || query;
+    if (searchValue.trim() !== '') {
+      const updatedSearches = [searchValue, ...recentSearches.filter((item) => item !== searchValue)].slice(0, 5);
       setRecentSearches(updatedSearches);
       localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
-      router.push(`search?query=${query}`);
+      router.push(`/search?query=${searchValue}`);
     }
   };
 
@@ -45,7 +46,7 @@ const Search = () => {
 
   return (
     <div className="relative w-[500px]">
-      <div className="flex flex-row  h-[50px] border-b border-black">
+      <div className="flex h-[50px] flex-row border-b border-black">
         <input
           className="w-full px-4 outline-none"
           placeholder="오롯이 당신만의 향을 찾아보세요!"
@@ -55,24 +56,24 @@ const Search = () => {
           onFocus={() => setShowDropdown(true)}
           onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
         />
-        <button onClick={handleSearch} className="px-4">
+        <button onClick={() => handleSearch()} className="px-4">
           <Image src={'/search-button.png'} alt="search" width={30} height={30} />
         </button>
       </div>
 
       {showDropdown && recentSearches.length > 0 && (
-        <ul className="absolute top-full mt-1 w-full bg-white border border-gray-300 shadow-lg rounded-md overflow-hidden z-50">
+        <ul className="border-gray-300 absolute top-full z-50 mt-1 w-full overflow-hidden rounded-md border bg-white shadow-lg">
           {recentSearches.map((search, index) => (
-            <li key={index} className="flex justify-between items-center px-4 py-2 hover:bg-gray-100 cursor-pointer">
+            <li key={index} className="hover:bg-gray-100 flex cursor-pointer items-center justify-between px-4 py-2">
               <span
-                onMouseDown={() => {
+                onClick={() => {
                   setQuery(search);
-                  handleSearch();
+                  handleSearch(search);
                 }}
               >
                 {search}
               </span>
-              <button onMouseDown={() => removeSearchItem(search)} className="text-gray-500 hover:text-red-500 text-sm">
+              <button onClick={() => removeSearchItem(search)} className="text-gray-500 text-sm hover:text-red-500">
                 ✕
               </button>
             </li>
