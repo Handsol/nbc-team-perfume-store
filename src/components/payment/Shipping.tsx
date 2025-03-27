@@ -14,9 +14,9 @@ const Shipping = () => {
     zoneCode: '',
     extraAddress: ''
   });
-  const postcodeScriptUrl = 'http://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+  // const postcodeScriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
 
-  const open = useDaumPostcodePopup(postcodeScriptUrl);
+  const open = useDaumPostcodePopup(process.env.NEXT_PUBLIC_postcodeScriptUrl);
 
   const handleComplete = (data: TAddress) => {
     let fullAddress = data.address; // 주소 변수
