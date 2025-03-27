@@ -1,32 +1,19 @@
 'use client';
-import { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAuthStore } from '@/zustand/authStore';
-import { Button } from '../ui/button';
-import { uploadReview } from '@/libs/api/product/review-api';
 
-const ReviewForm = ({ productId }: { productId: string }) => {
-  const { user } = useAuthStore();
-  const queryClient = useQueryClient();
+import { useState } from 'react';
+import { useUploadReviewMutation } from '@/libs/hooks/review/mutation';
+import { Button } from '../ui/button';
+
+interface ReviewFormProps {
+  productId: string;
+  user: { id: string } | null;
+}
+
+const ReviewForm = ({ productId, user }: ReviewFormProps) => {
   const [content, setContent] = useState<string>('');
   const [rating, setRating] = useState<number>(0);
   const [starRating, setStarRating] = useState<number>(0);
-
-  const mutation = useMutation({
-    mutationFn: () =>
-      uploadReview({
-        product_id: productId,
-        user_id: user!.id,
-        review_content: content,
-        review_rating: rating
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reviews', productId] });
-      setContent('');
-      setRating(0);
-      setStarRating(0);
-    }
-  });
+  const { mutate } = useUploadReviewMutation();
 
   // 별점 클릭 핸들러
   const handleRatingClick = (value: number) => {
@@ -43,25 +30,35 @@ const ReviewForm = ({ productId }: { productId: string }) => {
     setStarRating(0);
   };
 
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (user) {
+      mutate(
+        { productId, userId: user.id, content, rating },
+        {
+          onSuccess: () => {
+            setContent('');
+            setRating(0);
+            setStarRating(0);
+          }
+        }
+      );
+    }
+  };
+
   return (
     <div className="mt-6">
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          mutation.mutate();
-        }}
-        className="flex flex-col gap-4"
-      >
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <textarea
           onChange={(e) => setContent(e.target.value)}
           value={content}
           placeholder="리뷰를 입력하세요"
           required
-          className="border border-gray-300 rounded-lg p-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 resize-none h-24"
+          className="border-gray-300 text-gray-700 focus:ring-gray-400 h-24 resize-none rounded-lg border p-3 text-sm focus:outline-none focus:ring-2"
         />
         {/* 별점 입력 */}
         <div className="flex items-center">
-          <span className="text-sm text-gray-700 mr-2">별점:</span>
+          <span className="text-gray-700 mr-2 text-sm">별점:</span>
           {[...Array(5)].map((_, index) => {
             const starValue = index + 1;
             return (
@@ -71,7 +68,7 @@ const ReviewForm = ({ productId }: { productId: string }) => {
                 onClick={() => handleRatingClick(starValue)}
                 onMouseEnter={() => handleRatingHover(starValue)}
                 onMouseLeave={handleRatingLeave}
-                className={'text-2xl p-0 m-0 text-yellow-500 focus:outline-none'}
+                className={'m-0 p-0 text-2xl text-yellow-500 focus:outline-none'}
               >
                 {starValue <= (starRating || rating) ? '★' : '☆'}
               </button>
@@ -81,7 +78,7 @@ const ReviewForm = ({ productId }: { productId: string }) => {
         <Button
           type="submit"
           disabled={!user}
-          className="bg-black text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-800 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+          className="hover:bg-gray-800 disabled:bg-gray-400 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition disabled:cursor-not-allowed"
         >
           리뷰 작성
         </Button>

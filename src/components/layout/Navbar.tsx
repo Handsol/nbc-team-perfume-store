@@ -3,11 +3,11 @@
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 
-const Navibar = () => {
+const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  if (pathname === '/sign-up' || pathname === '/login') {
+  if (pathname === '/sign-up' || pathname === '/login' || pathname === '/my-page') {
     return null;
   }
 
@@ -29,14 +29,14 @@ const Navibar = () => {
 
   return (
     <div className="flex w-full border-b border-lightgray">
-      <div className="flex w-full max-w-[1000px] h-[50px] mx-auto divide-x divide-[#d3d3d3]">
+      <div className="mx-auto flex h-[50px] w-full max-w-[1000px] divide-x divide-[#d3d3d3]">
         {/* 남성용 */}
-        <div className="flex flex-row flex-1 items-center px-4 gap-5 min-w-0">
-          <button className="font-semibold whitespace-nowrap text-black" onClick={() => handleFilterChange('man')}>
+        <div className="flex min-w-0 flex-1 flex-row items-center gap-5 px-4">
+          <button className="whitespace-nowrap font-semibold text-black" onClick={() => handleFilterChange('man')}>
             For Man
           </button>
           {/* 하위 카테고리 버튼들: man + CategorySuffix로 필터링 */}
-          <div className="flex gap-6 flex-wrap shrink min-w-0 text-l text-gray">
+          <div className="text-l flex min-w-0 shrink flex-wrap gap-6 text-gray">
             {Object.entries(CategorySuffix).map(([category, suffix]) => (
               <button key={category} onClick={() => handleFilterChange(`man${suffix}`)}>
                 {category}
@@ -46,12 +46,12 @@ const Navibar = () => {
         </div>
 
         {/* 여성용 */}
-        <div className="flex flex-row flex-1 items-center px-4 gap-5 min-w-0">
-          <button className="font-semibold whitespace-nowrap text-black" onClick={() => handleFilterChange('woman')}>
+        <div className="flex min-w-0 flex-1 flex-row items-center gap-5 px-4">
+          <button className="whitespace-nowrap font-semibold text-black" onClick={() => handleFilterChange('woman')}>
             For Woman
           </button>
           {/* 하위 카테고리 버튼들: woman + CategorySuffix로 필터링 */}
-          <div className="flex gap-6 flex-wrap shrink min-w-0 text-l text-gray">
+          <div className="text-l flex min-w-0 shrink flex-wrap gap-6 text-gray">
             {Object.entries(CategorySuffix).map(([category, suffix]) => (
               <button key={category} onClick={() => handleFilterChange(`woman${suffix}`)}>
                 {category}
@@ -64,4 +64,4 @@ const Navibar = () => {
   );
 };
 
-export default Navibar;
+export default Navbar;

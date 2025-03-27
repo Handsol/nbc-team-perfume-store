@@ -1,6 +1,7 @@
+import { getProducts } from '@/libs/api/product/product-api';
 import ProductList from '@/components/product/ProductList';
 import PaginationControls from '@/components/pagination/paginationControls';
-import { getProducts } from '@/libs/api/product/product-api';
+
 const PRODUCTS_PER_PAGE = 12; // 한 페이지에 12개
 
 const ProductsPage = async ({ searchParams }: { searchParams: { category?: string; page?: string } }) => {
@@ -21,8 +22,7 @@ const ProductsPage = async ({ searchParams }: { searchParams: { category?: strin
         <PaginationControls currentPage={page} totalPages={totalPages} category={category} />
       </div>
     );
-  } catch (error) {
-    console.error('Error fetching products:', error);
+  } catch {
     return <div>제품 목록을 불러오는 중 오류가 발생했습니다.</div>;
   }
 };

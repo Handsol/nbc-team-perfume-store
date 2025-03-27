@@ -8,11 +8,15 @@ import { useAuthCheck } from '@/libs/hooks/useAuthCheck';
 import { useLogout } from '@/libs/hooks/useLogout';
 import { usePathname } from 'next/navigation';
 import { useLogin } from '@/libs/hooks/useLogin';
+import { useMyPage } from '@/libs/hooks/useMyPage';
+import { useCart } from '@/libs/hooks/useCart';
 
 const Header = () => {
   const isLogin = useAuthStore((state) => state.isLogin);
   const { handleLogout, loading: logoutLoading } = useLogout();
   const { goToLoginPage } = useLogin();
+  const { goToMyPage } = useMyPage();
+  const { goToCartPage } = useCart();
   const pathname = usePathname();
 
   useAuthCheck(); // 세션 및 zustand 상태 동기화 진행
@@ -22,11 +26,11 @@ const Header = () => {
   }
 
   return (
-    <header className="flex flex-col items-center w-full border-b border-lightgray">
-      <div className="flex flex-row w-full max-w-[1400px] h-[100px] justify-between items-center px-4">
+    <header className="flex w-full flex-col items-center border-b border-lightgray">
+      <div className="flex h-[100px] w-full max-w-[1400px] flex-row items-center justify-between px-4">
         {/* 로고 */}
         <Link href={'/'}>
-          <Image src={'/orot-logo.png'} alt="orot logo" width={150} height={0} style={{ height: 'auto' }} />
+          <Image src={'/orot-logo.png'} alt="orot logo" width={150} height={0} style={{ height: 'auto' }} priority />
         </Link>
 
         {/* 검색창 */}
@@ -48,10 +52,10 @@ const Header = () => {
             </button>
           )}
 
-          <button>
+          <button onClick={goToMyPage}>
             <Image src={'/mypage-button.png'} alt="login" width={80} height={0} style={{ height: 'auto' }} />
           </button>
-          <button>
+          <button onClick={goToCartPage}>
             <Image src={'/mycart-button.png'} alt="login" width={80} height={0} style={{ height: 'auto' }} />
           </button>
         </div>

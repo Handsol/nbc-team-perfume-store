@@ -3,15 +3,15 @@
 import { TCartItem, AddCartData } from '@/types/cart-items';
 import { getServerClient } from '@/utils/supabase/serverClient';
 
-const supabase = getServerClient()
+const supabase = getServerClient();
 
 //장바구니의 모든 아이템 리스트+제품정보 불러오기
 export const getCartItemList = async (userId: TCartItem['user_id']): Promise<TCartItem[]> => {
   const { data: cartItemList, error } = await supabase.from('carts').select('*, products(*)').eq('user_id', userId);
   if (error) throw error;
 
-  return cartItemList.sort((a,b)=>{
-    return b.cart_id - a.cart_id
+  return cartItemList.sort((a, b) => {
+    return b.cart_id - a.cart_id;
   });
 };
 
@@ -78,15 +78,13 @@ export const toggleCartItemChecked = async ({
   cartId: TCartItem['cart_id'];
   checked: TCartItem['cart_checked'];
 }) => {
-  
   const { data: checkedData, error: checkedError } = await supabase
     .from('carts')
-    .update({ cart_checked: checked })
+    .update({ cart_checked: !checked })
     .eq('cart_id', cartId)
     .select()
     .single();
   if (checkedError) throw checkedError;
-
   return checkedData;
 };
 
