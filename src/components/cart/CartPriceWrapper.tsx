@@ -24,7 +24,7 @@ const CartPriceWrapper = ({ cartItemList }: Props) => {
     setShippingPay(shippingPay);
     cartStatus.setSelectedItems(checkedList);
     cartStatus.setSelectedTotal(total); // 총 금액 상태 저장
-  }, [cartItemList, cartStatus]);
+  }, [cartItemList]);
 
   return (
     <div className="w-full min-w-[360px] grow bg-black p-2 xl:w-80">
