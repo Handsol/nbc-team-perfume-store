@@ -65,9 +65,9 @@ export default function SignupPage() {
         <div className="flex h-[650px] w-[550px] items-center justify-center">
           <div className="flex h-full w-[500px] flex-col justify-between">
             {/* 입력 필드 그룹 */}
-            <div className="flex h-[600px] flex-col justify-between">
+            <div className="flex h-[520px] flex-col justify-between">
               {/* 이메일 */}
-              <div className="relative h-[100px] pt-1">
+              <div className="relative h-[120px]">
                 <Input
                   type="email"
                   placeholder="이메일"
@@ -80,7 +80,7 @@ export default function SignupPage() {
               </div>
 
               {/* 비밀번호 */}
-              <div className="relative h-[150px]">
+              <div className="relative h-[180px]">
                 <Input
                   type="password"
                   placeholder="비밀번호"
@@ -125,7 +125,7 @@ export default function SignupPage() {
               </div>
 
               {/* 비밀번호 확인 */}
-              <div className="relative h-[100px]">
+              <div className="relative h-[120px]">
                 <Input
                   type="password"
                   placeholder="비밀번호 확인"
@@ -140,7 +140,7 @@ export default function SignupPage() {
               </div>
 
               {/* 닉네임 */}
-              <div className="relative h-[100px]">
+              <div className="relative h-[50px]">
                 <Input
                   type="text"
                   placeholder="닉네임"
@@ -153,18 +153,20 @@ export default function SignupPage() {
                   <p className="absolute left-0 top-[40px] text-sm text-red-500">{errors.nickname}</p>
                 )}
               </div>
+
+              {/* 안내 메시지 공간 확보 */}
+              <div className="h-[50px] pt-6">
+                {(capsLockOn || numLockOn) && (
+                  <div className="rounded-md bg-yellow-50 p-3 text-sm text-yellow-600">
+                    {capsLockOn && <p className="flex items-center">⚠️ {ACCOUNT_ERROR_MESSAGES.keyboard.capsLock}</p>}
+                    {numLockOn && <p className="flex items-center">⚠️ {ACCOUNT_ERROR_MESSAGES.keyboard.numLock}</p>}
+                  </div>
+                )}
+              </div>
             </div>
 
-            {/* 안내 메시지 */}
-            {(capsLockOn || numLockOn) && (
-              <div className="mt-2 rounded-md bg-yellow-50 p-3 text-sm text-yellow-600">
-                {capsLockOn && <p className="flex items-center">⚠️ {ACCOUNT_ERROR_MESSAGES.keyboard.capsLock}</p>}
-                {numLockOn && <p className="flex items-center">⚠️ {ACCOUNT_ERROR_MESSAGES.keyboard.numLock}</p>}
-              </div>
-            )}
-
             {/* 버튼 영역 */}
-            <div className="flex flex-col gap-5 pb-1">
+            <div className="flex flex-col gap-5">
               <Button onClick={handleSignup} disabled={loading} className="w-full rounded-lg py-3 text-white">
                 {loading ? '처리 중...' : '회원가입'}
               </Button>
