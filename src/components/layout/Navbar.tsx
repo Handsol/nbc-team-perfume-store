@@ -7,7 +7,7 @@ const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  if (pathname === '/sign-up' || pathname === '/login') {
+  if (pathname === '/sign-up' || pathname === '/login' || pathname === '/my-page') {
     return null;
   }
 

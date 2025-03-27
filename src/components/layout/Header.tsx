@@ -8,11 +8,15 @@ import { useAuthCheck } from '@/libs/hooks/useAuthCheck';
 import { useLogout } from '@/libs/hooks/useLogout';
 import { usePathname } from 'next/navigation';
 import { useLogin } from '@/libs/hooks/useLogin';
+import { useMyPage } from '@/libs/hooks/useMyPage';
+import { useCart } from '@/libs/hooks/useCart';
 
 const Header = () => {
   const isLogin = useAuthStore((state) => state.isLogin);
   const { handleLogout, loading: logoutLoading } = useLogout();
   const { goToLoginPage } = useLogin();
+  const { goToMyPage } = useMyPage();
+  const { goToCartPage } = useCart();
   const pathname = usePathname();
 
   useAuthCheck(); // 세션 및 zustand 상태 동기화 진행
@@ -48,10 +52,10 @@ const Header = () => {
             </button>
           )}
 
-          <button>
+          <button onClick={goToMyPage}>
             <Image src={'/mypage-button.png'} alt="login" width={80} height={0} style={{ height: 'auto' }} />
           </button>
-          <button>
+          <button onClick={goToCartPage}>
             <Image src={'/mycart-button.png'} alt="login" width={80} height={0} style={{ height: 'auto' }} />
           </button>
         </div>

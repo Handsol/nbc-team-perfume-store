@@ -1,4 +1,4 @@
-export const SIGNUP_ERROR_MESSAGES = {
+export const ACCOUNT_ERROR_MESSAGES = {
   email: {
     required: '이메일은 필수 입력 항목입니다.',
     invalid: '유효한 이메일 형식이 아닙니다.'

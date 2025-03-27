@@ -24,7 +24,7 @@ const mapSupabaseUserToUser = (supabaseUser: SupabaseUser): User => {
 
   return {
     id: supabaseUser.id,
-    nickname: supabaseUser.user_metadata?.nickname || '',
+    nickname: supabaseUser.user_metadata?.user_nickname || '',
     email,
     created_at: supabaseUser.created_at
   };
@@ -100,15 +100,20 @@ export const isLoggedIn = async (): Promise<boolean> => {
  * 현재 사용자와 세션 정보를 가져오는 함수
  * @returns 사용자 정보, 세션, 에러 메시지
  */
-export const getCurrentUser = async (): Promise<AuthResponse> => {
+export const getCurrentUser = async (): Promise<AuthResponse & { provider?: string }> => {
   const supabase = getBrowserClient();
   const { data, error } = await supabase.auth.getSession();
 
-  const mappedUser = data.session?.user ? mapSupabaseUserToUser(data.session.user) : null;
+  const mappedUser = data.session?.user ? {
+    ...mapSupabaseUserToUser(data.session.user),
+    provider: data.session.user.app_metadata?.provider || 'email',
+  }
+: null;
 
   return {
     user: mappedUser,
     session: data.session,
+    provider: data.session?.user?.app_metadata?.provider || 'email',
     error: error?.message || null
   };
 };
@@ -173,4 +178,72 @@ export const signInWithKakao = async (redirectTo: string): Promise<{ error: stri
  */
 export const signInWithGoogle = async (redirectTo: string): Promise<{ error: string | null }> => {
   return signInWithOAuth(SocialProvider.Google, redirectTo);
+};
+
+/**
+ * 닉네임 업데이트 함수
+ * @param newNickname - 새로운 닉네임
+ * @returns 업데이트된 사용자 정보, 세션, 에러 메시지
+ */
+export const updateNickname = async (newNickname: string): Promise<AuthResponse> => {
+  const supabase = getBrowserClient();
+
+  const { data: updateData, error: updateError } = await supabase.auth.updateUser({
+    data: { user_nickname: newNickname },
+  });
+
+  if (updateError) {
+    return { user: null, session: null, error: updateError.message };
+  }
+
+  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+  if (sessionError || !sessionData.session?.user) {
+    return { user: null, session: null, error: '세션 정보를 가져오는 중 오류가 발생했습니다.' };
+  }
+
+  const userId = sessionData.session.user.id;
+    const { error: dbError } = await supabase
+      .from('users')
+      .update({ user_nickname: newNickname })
+      .eq('user_id', userId);
+
+    if (dbError) {
+      return { user: null, session: null, error: `public.users 업데이트 중 오류: ${dbError.message}` };
+    }
+
+  const mappedUser = updateData.user ? mapSupabaseUserToUser(updateData.user) : null;
+  return { user: mappedUser, session: sessionData.session, error: null };
+};
+
+/**
+ * 비밀번호 업데이트 함수
+ * @param currentPassword - 현재 비밀번호
+ * @param newPassword - 새 비밀번호
+ * @returns 에러 메시지
+ */
+export const updatePassword = async (
+  currentPassword: string,
+  newPassword: string
+): Promise<{ error: string | null }> => {
+  const supabase = getBrowserClient();
+  
+  // 현재 비밀번호로 로그인 시도하여 유효성 확인
+  const { data: sessionData, error: loginError } = await supabase.auth.signInWithPassword({
+    email: (await getCurrentUser()).user?.email || '',
+    password: currentPassword,
+  });
+
+  if (loginError || !sessionData.session) {
+    return { error: '현재 비밀번호가 올바르지 않습니다.' };
+  }
+
+  const { error: updateError } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  if (updateError) {
+    return { error: updateError.message };
+  }
+
+  return { error: null };
 };
