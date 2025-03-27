@@ -37,7 +37,6 @@ export const useMyPage = () => {
     const loadUser = async () => {
       const { user: fetchedUser, provider: fetchedProvider, error } = await getCurrentUser();
       if (error || !fetchedUser) {
-        router.push('/login'); // 로그인 상태가 아니면 로그인 페이지로 리다이렉트
         return;
       }
       setEmail(fetchedUser.email);
