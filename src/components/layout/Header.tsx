@@ -6,7 +6,6 @@ import Search from '../search/Search';
 import { useAuthStore } from '@/zustand/authStore';
 import { useAuthCheck } from '@/libs/hooks/useAuthCheck';
 import { useLogout } from '@/libs/hooks/useLogout';
-import { usePathname } from 'next/navigation';
 import { useLogin } from '@/libs/hooks/useLogin';
 import { useMyPage } from '@/libs/hooks/useMyPage';
 import { useCart } from '@/libs/hooks/useCart';
@@ -17,13 +16,8 @@ const Header = () => {
   const { goToLoginPage } = useLogin();
   const { goToMyPage } = useMyPage();
   const { goToCartPage } = useCart();
-  const pathname = usePathname();
 
   useAuthCheck(); // 세션 및 zustand 상태 동기화 진행
-
-  if (pathname === '/sign-up' || pathname === '/login') {
-    return null;
-  }
 
   return (
     <header className="flex w-full flex-col items-center border-b border-lightgray">
