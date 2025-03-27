@@ -8,7 +8,7 @@ export const calculateTotal = (cartItemList: TCartItem[]) => {
     return cur + item.products.product_price * item.cart_quantity;
   }, 0);
 
-  const shippingPay = total === 0 ? 0 : 3000; //배송비
+  const shippingPay = total === 0 ? 0 : total > 50000 ? 0 : 3000; //배송비
   if (total < 50000) {
     total += shippingPay;
   }
