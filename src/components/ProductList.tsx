@@ -1,29 +1,35 @@
-import { Products } from '@/types/products';
+'use client';
+import { ProductListProps } from '@/types/products';
 import Image from 'next/image';
-
-interface ProductListProps {
-  products: Products[];
-}
+import Link from 'next/link';
 
 const ProductList = ({ products }: ProductListProps) => {
   return (
     <div className="container mx-auto px-4 py-8">
-      <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
           <li
             key={product.product_id}
-            className="overflow-hidden rounded-lg border bg-white shadow-md transition-shadow duration-300 hover:shadow-lg"
+            className="bg-white rounded-lg shadow-sm overflow-hidden hover:-translate-y-1 transition-all duration-300"
           >
-            <Image
-              src={product.product_thumbnail}
-              alt={product.product_title}
-              width={200}
-              height={48}
-              className="h-48 w-full object-cover"
-            />
-            <h2 className="text-gray-800 truncate text-lg font-semibold">{product.product_brand}</h2>
-            <p className="text-gray-600 mt-1 text-base">{product.product_title}</p>
-            <p>{product.product_price.toLocaleString()}원</p>
+            {/* 제품 상세 페이지 이동 링크 */}
+
+            <Link href={`/products/${product.product_id}`}>
+              <div className="relative w-full h-56">
+                <Image
+                  src={product.product_thumbnail}
+                  alt={product.product_title}
+                  fill
+                  className=" object-cover"
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                />
+              </div>
+              <div className="p-4">
+                <h2 className="text-sm font-medium text-gray-500 truncate">{product.product_brand}</h2>
+                <p className="mt-1 text-base font-semibold text-gray-900 truncate">{product.product_title}</p>
+                <p className="mt-2 text-lg font-bold text-gray-800">{product.product_price.toLocaleString()}원</p>
+              </div>
+            </Link>
           </li>
         ))}
       </ul>
